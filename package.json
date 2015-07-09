@@ -1,0 +1,14 @@
+{
+  "name": "postfix-parser",
+  "description": "Postfix Log Parser",
+  "version": "0.0.1",
+  "private": false,
+  "dependencies": {
+  },
+  "devDependencies": {
+    "mocha": "^2.2.5"
+  },
+  "scripts": {
+    "test": "mocha"
+  }
+}
