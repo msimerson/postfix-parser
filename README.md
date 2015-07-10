@@ -1,15 +1,18 @@
+[![Build Status][ci-img]][ci-url]
+[![Coverage Status][cov-img]][cov-img]
+
 ## Postfix Parser
 
 It parses postfix log entries.
 
-var parser = require('postfix-parser');
+    var parser = require('postfix-parser');
 
 ### asObject
 
 Exports and single function: asObject, which requires two positional arguments:
 
 1. type (see Parser Types)
-2. a single line syslog entry
+2. a single line syslog entry (or snippet)
 
 ### Typical Usage
 
@@ -22,7 +25,7 @@ Exports and single function: asObject, which requires two positional arguments:
 
     var match = parsed.prog.match(/postfix\/(\w+)$/;
     if (!match) {
-        // not a postfix line, do what you want
+        // not a postfix line, you probably have these, do what you want
     }
 
     // match[1] is the postfix program (qmgr, smtp, bounce ...)
@@ -90,3 +93,9 @@ Exports and single function: asObject, which requires two positional arguments:
 
 Each postfix program has its own format. See the test file for complete examples for every postfix program.
 
+
+
+[ci-img]: https://travis-ci.org/DoubleCheck/postfix-parser.svg?branch=travis
+[ci-url]: https://travis-ci.org/DoubleCheck/postfix-parser
+[cov-img]: https://coveralls.io/repos/DoubleCheck/postfix-parser/badge.svg?branch=master&service=github
+[cov-url]: https://coveralls.io/github/DoubleCheck/postfix-parser?branch=master

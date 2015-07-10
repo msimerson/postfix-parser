@@ -1,5 +1,7 @@
 'use strict';
 
+if (process.env.COVERAGE) require('blanket');
+
 var envEmailAddr   = '<([^>]*)>';
 var postfixQid     = '[0-9A-F]{10,11}';     // default queue ids
 var postfixQidLong = '[0-9A-Za-z]{14,15}';  // optional 'long' ids
