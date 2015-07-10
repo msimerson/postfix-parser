@@ -1,14 +1,38 @@
 {
   "name": "postfix-parser",
   "description": "Postfix Log Parser",
-  "version": "0.0.1",
+  "keywords": [
+    "postfix",
+    "log",
+    "parse",
+    "maillog",
+    "mail.log"
+  ],
+  "version": "0.0.2",
   "private": false,
-  "dependencies": {
+  "homepage": "https://github.com/DoubleCheck/postfix-parser",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/DoubleCheck/postfix-parser.git"
   },
+  "main": "index.js",
+  "config": {
+    "blanket": {
+      "pattern": "index.js"
+    }
+  },
+  "dependencies": {},
   "devDependencies": {
-    "mocha": "^2.2.5"
+    "blanket": "^1.1.7",
+    "coveralls": "^2.11.2",
+    "mocha": "^2.2.5",
+    "mocha-lcov-reporter": "0.0.2"
+  },
+  "bugs": {
+    "url": "https://github.com/DoubleCheck/postfix-parser/issues"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "coveralls": "COVERAGE=1 ./node_modules/.bin/mocha --require blanket --reporter mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js"
   }
 }
