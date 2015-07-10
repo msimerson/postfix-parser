@@ -11,6 +11,6 @@ matrix:
         - node_js: "iojs"
 
 after_success:
-#   - npm run coveralls
+    - npm run coveralls
 
 sudo: false
