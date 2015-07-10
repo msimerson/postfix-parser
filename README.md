@@ -1,5 +1,5 @@
 [![Build Status][ci-img]][ci-url]
-[![Coverage Status][cov-img]][cov-img]
+[![Coverage Status][cov-img]][cov-url]
 
 ## Postfix Parser
 
