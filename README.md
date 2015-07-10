@@ -95,7 +95,7 @@ Each postfix program has its own format. See the test file for complete examples
 
 
 
-[ci-img]: https://travis-ci.org/DoubleCheck/postfix-parser.svg?branch=travis
+[ci-img]: https://travis-ci.org/DoubleCheck/postfix-parser.svg
 [ci-url]: https://travis-ci.org/DoubleCheck/postfix-parser
-[cov-img]: https://coveralls.io/repos/DoubleCheck/postfix-parser/badge.svg?branch=master&service=github
-[cov-url]: https://coveralls.io/github/DoubleCheck/postfix-parser?branch=master
+[cov-img]: https://coveralls.io/repos/DoubleCheck/postfix-parser/badge.svg
+[cov-url]: https://coveralls.io/github/DoubleCheck/postfix-parser
