@@ -1,5 +1,5 @@
 'use strict';
-/* jshint maxlen: false, camelcase: false */
+/* jshint maxlen: false, camelcase: false, maxstatements: false */
 var assert = require('assert');
 
 var re = require('../index');
@@ -129,6 +129,15 @@ describe('re.asObject parser', function () {
             status: 'sent (250 2.0.0 Ok: queued as 3mKPTL0WpJz45Shm)',
         });
     });
+
+    it('postfix/smtp error', function () {
+        assert.deepEqual(re.asObject('smtp', 'connect to mail.mountaineer.k12.mm.us[70.200.138.252]:25: Connection timed out'),
+        {
+            remote: 'mail.mountaineer.k12.mm.us[70.200.138.252]:25',
+            error: 'Connection timed out',
+        });
+    });
+
     it('postfix/cleanup message-id', function () {
         assert.deepEqual(re.asObject('cleanup', '3mKxs35RQsz7sXF: message-id=<3mKxs308vpz7sXd@mx14.example.net>'),
         {
@@ -205,6 +214,14 @@ describe('re.asObject parser', function () {
             qid: '3l8L6X6lCPz7t2M',
             from: 'deedee@example.com',
             status: 'expired, returned to sender',
+        });
+    });
+
+    it('postfix/qmgr removed', function () {
+        assert.deepEqual(re.asObject('qmgr', '3l8L6X6lCPz7t2M: removed'),
+        {
+            qid: '3l8L6X6lCPz7t2M',
+            action: 'removed',
         });
     });
 

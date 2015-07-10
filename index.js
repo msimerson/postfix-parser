@@ -21,7 +21,7 @@ var regex = {
             '(dsn)=([^,]+), ' +
             '(status)=(.*)$'
         ),
-    'smtp-err1': /^(to) ([^\s]+): (.*)$/,
+    'smtp-conn-err': /^connect to ([^\s]+): (.*)$/,
     qmgr : new RegExp(
             '^(' + postfixQidAny + '): ' +
             '(from)=' + envEmailAddr + ', ' +
@@ -73,6 +73,7 @@ var regex = {
 
 exports.asObject = function (type, line) {
     if (type === 'qmgr') return qmgrAsObject(line);
+    if (type === 'smtp') return smtpAsObject(line);
     var match = line.match(regex[type]);
     if (!match) return;
     if (type === 'syslog') return syslogAsObject(match);
@@ -99,6 +100,27 @@ function syslogAsObject (match) {
     };
 }
 
+function matchAsObject (match) {
+    var obj = { qid: match.shift() };
+    while (match.length) {
+        var key = match.shift();
+        var val = match.shift();
+        if (key && val) obj[key] = val;
+    }
+    return obj;
+}
+
+function smtpAsObject (line) {
+    var match = line.match(regex.smtp);
+    if (!match) {
+        match = line.match(regex['smtp-conn-err']);
+        if (match) return { remote: match[1], error: match[2]  };
+        return;
+    }
+    match.shift();
+    return matchAsObject(match);
+}
+
 function bounceAsObject (match) {
     match.shift();
     return {
@@ -115,11 +137,5 @@ function qmgrAsObject (line) {
         return;
     }
     match.shift();
-    var obj = { qid: match.shift() };
-    while (match.length) {
-        var key = match.shift();
-        var val = match.shift();
-        if (key && val) obj[key] = val;
-    }
-    return obj;
+    return matchAsObject(match);
 }
