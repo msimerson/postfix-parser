@@ -62,6 +62,20 @@ describe('re.asObject parser', function () {
         });
     });
 
+    it('postfix/smtp sent w/o queue ID', function () {
+        assert.deepEqual(
+            re.asObject('smtp', 'to=<susan.bck@example.org>, relay=mpafm.example.org[24.100.200.21]:25, conn_use=2, delay=1.2, delays=0.76/0.01/0.09/0.34, dsn=2.0.0, status=sent (250 2.0.0 t5UI2nBt018923-t5UI2nBw018923 Message accepted for delivery)'),
+        {
+            to: 'susan.bck@example.org',
+            relay: 'mpafm.example.org[24.100.200.21]:25',
+            conn_use: '2',
+            delay: '1.2',
+            delays: '0.76/0.01/0.09/0.34',
+            dsn: '2.0.0',
+            status: 'sent (250 2.0.0 t5UI2nBt018923-t5UI2nBw018923 Message accepted for delivery)',
+        });
+    });
+
     it('postfix/smtp bounced', function () {
         assert.deepEqual(re.asObject('smtp', '3mPVKl0Mhjz7sXv: to=<jpayne@recipient.com>, relay=mail2.sender.com[66.100.32.07]:25, conn_use=2, delay=2.5, delays=1.6/0.01/0.08/0.81, dsn=5.7.1, status=bounced (host mail2.sender.com[66.100.32.07] said: 550 5.7.1 Unable to deliver to <jpayne@recipient.com> (in reply to RCPT TO command))'),
         {
@@ -133,8 +147,9 @@ describe('re.asObject parser', function () {
     it('postfix/smtp error', function () {
         assert.deepEqual(re.asObject('smtp', 'connect to mail.mountaineer.k12.mm.us[70.200.138.252]:25: Connection timed out'),
         {
-            remote: 'mail.mountaineer.k12.mm.us[70.200.138.252]:25',
-            error: 'Connection timed out',
+            action: 'delivery',
+            mx: 'mail.mountaineer.k12.mm.us[70.200.138.252]:25',
+            err: 'Connection timed out',
         });
     });
 
@@ -142,6 +157,13 @@ describe('re.asObject parser', function () {
         assert.deepEqual(re.asObject('cleanup', '3mKxs35RQsz7sXF: message-id=<3mKxs308vpz7sXd@mx14.example.net>'),
         {
             qid: '3mKxs35RQsz7sXF',
+            'message-id': '3mKxs308vpz7sXd@mx14.example.net',
+        });
+    });
+
+    it('postfix/cleanup message-id w/o queue ID', function () {
+        assert.deepEqual(re.asObject('cleanup', 'message-id=<3mKxs308vpz7sXd@mx14.example.net>'),
+        {
             'message-id': '3mKxs308vpz7sXd@mx14.example.net',
         });
     });
@@ -163,10 +185,30 @@ describe('re.asObject parser', function () {
         });
     });
 
+    it('postfix/pickup w/o queue ID', function () {
+        assert.deepEqual(re.asObject('pickup', 'uid=1206 from=<system>'),
+        {
+            'uid': '1206',
+            from: 'system',
+        });
+    });
+
     it('postfix/error', function () {
         assert.deepEqual(re.asObject('error', '3mJddz5fh3z7sdM: to=<rcarey@example.tv>, relay=none, delay=165276, delays=165276/0.09/0/0.09, dsn=4.4.1, status=deferred (delivery temporarily suspended: connect to 24.200.177.247[24.200.177.247]:25: Connection timed out)'),
         {
             qid: '3mJddz5fh3z7sdM',
+            to: 'rcarey@example.tv',
+            relay: 'none',
+            delay: '165276',
+            delays: '165276/0.09/0/0.09',
+            dsn: '4.4.1',
+            status: 'deferred (delivery temporarily suspended: connect to 24.200.177.247[24.200.177.247]:25: Connection timed out)',
+        });
+    });
+
+    it('postfix/error w/o queue ID', function () {
+        assert.deepEqual(re.asObject('error', 'to=<rcarey@example.tv>, relay=none, delay=165276, delays=165276/0.09/0/0.09, dsn=4.4.1, status=deferred (delivery temporarily suspended: connect to 24.200.177.247[24.200.177.247]:25: Connection timed out)'),
+        {
             to: 'rcarey@example.tv',
             relay: 'none',
             delay: '165276',
@@ -190,6 +232,19 @@ describe('re.asObject parser', function () {
         });
     });
 
+    it('postfix/local w/o queue ID', function () {
+        assert.deepEqual(re.asObject('local', 'to=<logspam@system.alerts>, relay=local, delay=3.1, delays=1.8/0.86/0/0.44, dsn=2.0.0, status=sent (forwarded as 3mLQKK4rDdz7sVS)'),
+        {
+            to: 'logspam@system.alerts',
+            relay: 'local',
+            delay: '3.1',
+            delays: '1.8/0.86/0/0.44',
+            dsn: '2.0.0',
+            status: 'forwarded',
+            forwardedAs: '3mLQKK4rDdz7sVS',
+        });
+    });
+
     it('postfix/bounce', function () {
         assert.deepEqual(re.asObject('bounce', '3mKxY750hmz7scK: sender non-delivery notification: 3mKxYH0vl4z7sWS'),
         {
@@ -198,10 +253,26 @@ describe('re.asObject parser', function () {
         });
     });
 
+    it('postfix/bounce w/o queue ID', function () {
+        assert.deepEqual(re.asObject('bounce', 'sender non-delivery notification: 3mKxYH0vl4z7sWS'),
+        {
+            dsnQid: '3mKxYH0vl4z7sWS',
+        });
+    });
+
     it('postfix/qmgr from', function () {
         assert.deepEqual(re.asObject('qmgr', '3mKnNK1XhXz7sgL: from=<spruit@example.org>, size=11445, nrcpt=1 (queue active)'),
         {
             qid: '3mKnNK1XhXz7sgL',
+            from: 'spruit@example.org',
+            size: '11445',
+            nrcpt: '1',
+        });
+    });
+
+    it('postfix/qmgr from w/o queue ID', function () {
+        assert.deepEqual(re.asObject('qmgr', 'from=<spruit@example.org>, size=11445, nrcpt=1 (queue active)'),
+        {
             from: 'spruit@example.org',
             size: '11445',
             nrcpt: '1',

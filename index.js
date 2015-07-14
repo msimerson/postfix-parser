@@ -11,7 +11,7 @@ var postfixQidAny  = postfixQidLong + '|' + postfixQid;
 var regex = {
     syslog: /^([A-Za-z]{3} [0-9 ]{2} [\d:]{8}) ([^\s]+) ([^\[]+)\[([\d]+)\]: (.*)$/,
     smtp : new RegExp(
-            '^(' + postfixQidAny + '): ' +
+            '^(?:(' + postfixQidAny + '): )?' +
             '(to)=' + envEmailAddr + ', ' +
             '(?:(orig_to)=' + envEmailAddr + ', )?' +
             '(relay)=([^,]+), ' +
@@ -22,8 +22,13 @@ var regex = {
             '(status)=(.*)$'
         ),
     'smtp-conn-err': /^connect to ([^\s]+): (.*)$/,
+    'smtp-debug': new RegExp('( enabling PIX workarounds|' +
+            'Cannot start TLS: handshake failure|: lost connection with |' +
+            '^SSL_connect error to |^warning: no MX host for |' +
+            '^warning: TLS library problem:|^warning: numeric domain name|' +
+            ': conversation with |: host )'),
     qmgr : new RegExp(
-            '^(' + postfixQidAny + '): ' +
+            '^(?:(' + postfixQidAny + '): )?' +
             '(from)=' + envEmailAddr + ', ' +
             '(?:' +
             '(size)=([0-9]+), ' +
@@ -34,16 +39,16 @@ var regex = {
         ),
     'qmgr-removed': new RegExp('^(' + postfixQidAny + '): removed'),
     cleanup : new RegExp(
-            '^(' + postfixQidAny + '): ' +
+            '^(?:(' + postfixQidAny + '): )?' +
             '((?:resent-)?message-id)=' + envEmailAddr 
         ),
     pickup : new RegExp(
-            '^(' + postfixQidAny + '): ' +
+            '^(?:(' + postfixQidAny + '): )?' +
             '(uid)=([0-9]+) ' +
             '(from)=' + envEmailAddr
         ),
     'error' : new RegExp(
-            '^(' + postfixQidAny + '): ' +
+            '^(?:(' + postfixQidAny + '): )?' +
             '(to)=' + envEmailAddr + ', ' +
             '(relay)=([^,]+), ' +
             '(delay)=([^,]+), ' +
@@ -52,12 +57,12 @@ var regex = {
             '(status)=(.*)$'
         ),
     bounce : new RegExp(
-            '^(' + postfixQidAny + '): ' +
+            '^(?:(' + postfixQidAny + '): )?' +
             'sender non-delivery notification: ' +
             '(' + postfixQidAny + '$)'
         ),
     local : new RegExp(
-            '^(' + postfixQidAny + '): ' +
+            '^(?:(' + postfixQidAny + '): )?' +
             '(to)=' + envEmailAddr + ', ' +
             '(relay)=([^,]+), ' +
             '(delay)=([^,]+), ' +
@@ -72,6 +77,10 @@ var regex = {
 };
 
 exports.asObject = function (type, line) {
+    if (!type || !line) {
+        console.log('ERROR: missing required arg');
+        return;
+    }
     if (type === 'qmgr') return qmgrAsObject(line);
     if (type === 'smtp') return smtpAsObject(line);
     var match = line.match(regex[type]);
@@ -80,7 +89,9 @@ exports.asObject = function (type, line) {
     if (type === 'bounce') return bounceAsObject(match);
     if (type === 'scache') return { statistics: match[1] };
     match.shift();
-    var obj = { qid: match.shift() };
+    var obj = {};
+    var qid = match.shift();
+    if (qid) obj.qid = qid;
     while (match.length) {
         var key = match.shift();
         var val = match.shift();
@@ -101,7 +112,9 @@ function syslogAsObject (match) {
 }
 
 function matchAsObject (match) {
-    var obj = { qid: match.shift() };
+    var obj = {};
+    var qid = match.shift();
+    if (qid) obj.qid = qid;
     while (match.length) {
         var key = match.shift();
         var val = match.shift();
@@ -114,7 +127,13 @@ function smtpAsObject (line) {
     var match = line.match(regex.smtp);
     if (!match) {
         match = line.match(regex['smtp-conn-err']);
-        if (match) return { remote: match[1], error: match[2]  };
+        if (match) return {
+            action: 'delivery',
+            mx: match[1],
+            err: match[2]
+        };
+        match = line.match(regex['smtp-debug']);
+        if (match) return { debug: match[0] };
         return;
     }
     match.shift();
@@ -123,10 +142,11 @@ function smtpAsObject (line) {
 
 function bounceAsObject (match) {
     match.shift();
-    return {
-        qid:    match.shift(),
-        dsnQid: match.shift(),
-    };
+    var obj = {};
+    var qid = match.shift();
+    if (qid) obj.qid = qid;
+    obj.dsnQid = match.shift();
+    return obj;
 }
 
 function qmgrAsObject (line) {
