@@ -81,6 +81,7 @@ exports.asObject = function (type, line) {
         console.log('ERROR: missing required arg');
         return;
     }
+    if ('postfix/' === type.substr(0,8)) type = type.substr(8);
     if (type === 'qmgr') return qmgrAsObject(line);
     if (type === 'smtp') return smtpAsObject(line);
     var match = line.match(regex[type]);
