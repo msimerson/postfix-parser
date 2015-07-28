@@ -84,8 +84,10 @@ exports.asObject = function (type, line) {
     if ('postfix/' === type.substr(0,8)) type = type.substr(8);
     if (type === 'qmgr') return qmgrAsObject(line);
     if (type === 'smtp') return smtpAsObject(line);
+
     var match = line.match(regex[type]);
     if (!match) return;
+
     if (type === 'syslog') return syslogAsObject(match);
     if (type === 'bounce') return bounceAsObject(match);
     if (type === 'scache') return { statistics: match[1] };
