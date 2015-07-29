@@ -270,6 +270,16 @@ describe('re.asObject parser', function () {
         });
     });
 
+    it('postfix/qmgr from', function () {
+        assert.deepEqual(re.asObject('qmgr', '3mfNtc147Bz1M9pl: from=<e13f0bfb.ged.hd0.23.hjdjln+lugoe=maevolen.com@bnc.mailjet.com>, size=79660, nrcpt=1 (queue active)'),
+        {
+            qid: '3mfNtc147Bz1M9pl',
+            from: 'e13f0bfb.ged.hd0.23.hjdjln+lugoe=maevolen.com@bnc.mailjet.com',
+            size: '79660',
+            nrcpt: '1',
+        });
+    });
+
     it('postfix/qmgr from w/o queue ID', function () {
         assert.deepEqual(re.asObject('qmgr', 'from=<spruit@example.org>, size=11445, nrcpt=1 (queue active)'),
         {
@@ -300,6 +310,13 @@ describe('re.asObject parser', function () {
         assert.deepEqual(re.asObject('scache', 'statistics: domain lookup hits=0 miss=3 success=0%'),
         {
             statistics: 'domain lookup hits=0 miss=3 success=0%',
+        });
+    });
+
+    it('postfix/postscreen', function () {
+        assert.deepEqual(re.asObject('postscreen', 'WHITELISTED [10.2.2.91]:56553'),
+        {
+            postscreen: 'WHITELISTED [10.2.2.91]:56553',
         });
     });
 });

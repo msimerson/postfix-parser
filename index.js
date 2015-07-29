@@ -4,7 +4,7 @@ if (process.env.COVERAGE) require('blanket');
 
 var envEmailAddr   = '<([^>]*)>';
 var postfixQid     = '[0-9A-F]{10,11}';     // default queue ids
-var postfixQidLong = '[0-9A-Za-z]{14,15}';  // optional 'long' ids
+var postfixQidLong = '[0-9A-Za-z]{14,16}';  // optional 'long' ids
 var postfixQidAny  = postfixQidLong + '|' + postfixQid;
 
 /* jshint maxlen: 90 */
@@ -74,9 +74,11 @@ var regex = {
             '\\)$'
         ),
     scache : new RegExp('^statistics: (.*)'),
+    postscreen : new RegExp('^(.*)'),
 };
 
 exports.asObject = function (type, line) {
+    /* jshint maxstatements: 25 */
     if (!type || !line) {
         console.log('ERROR: missing required arg');
         return;
@@ -91,6 +93,7 @@ exports.asObject = function (type, line) {
     if (type === 'syslog') return syslogAsObject(match);
     if (type === 'bounce') return bounceAsObject(match);
     if (type === 'scache') return { statistics: match[1] };
+    if (type === 'postscreen') return { postscreen: match[1] };
     match.shift();
     var obj = {};
     var qid = match.shift();
