@@ -23,15 +23,15 @@ Exports and single function: asObject, which requires two positional arguments:
     }
     // parsed is an object (see Parser Types -> syslog)
 
-    var match = parsed.prog.match(/postfix\/(\w+)$/;
-    if (!match) {
+    if (! /^postfix/.test(parsed.prog) ) {
         // not a postfix line, you probably have these, do what you want
+        return;
     }
 
     // match[1] is the postfix program (qmgr, smtp, bounce ...)
-    var msg = parser.asObject(match[1], parsed.msg);
+    var msg = parser.asObject(parsed.prog, parsed.msg);
 
-    // msg is an object of the type matched above (see examples below)
+    // msg <-- an object of the type matched above (see examples below)
 
 
 ## Parser Types
@@ -82,7 +82,7 @@ Exports and single function: asObject, which requires two positional arguments:
     }
 
     // do something clever with that beautifully parsed data
-    // may I suggest, postfix-to-elasticsearch?
+    // may I suggest, [log-ship-elasticsearch-postfix](https://github.com/DoubleCheck/log-ship-elasticsearch-postfix)
 
 ### cleanup
 ### error
@@ -93,6 +93,9 @@ Exports and single function: asObject, which requires two positional arguments:
 
 Each postfix program has its own format. See the test file for complete examples for every postfix program.
 
+## See also
+
+See [log-ship-elasticsearch-postfix](https://github.com/DoubleCheck/log-ship-elasticsearch-postfix) for an example of combining all log entries for a message into a normalized document.
 
 
 [ci-img]: https://travis-ci.org/DoubleCheck/postfix-parser.svg
