@@ -1,5 +1,6 @@
 [![Build Status][ci-img]][ci-url]
 [![Coverage Status][cov-img]][cov-url]
+[![Code Climate][clim-img]][clim-url]
 
 ## Postfix Parser
 
@@ -102,3 +103,5 @@ See [log-ship-elasticsearch-postfix](https://github.com/DoubleCheck/log-ship-ela
 [ci-url]: https://travis-ci.org/DoubleCheck/postfix-parser
 [cov-img]: https://coveralls.io/repos/DoubleCheck/postfix-parser/badge.svg
 [cov-url]: https://coveralls.io/github/DoubleCheck/postfix-parser
+[clim-img]: https://codeclimate.com/github/DoubleCheck/postfix-parser/badges/gpa.svg
+[clim-url]: https://codeclimate.com/github/DoubleCheck/postfix-parser
