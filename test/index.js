@@ -153,6 +153,13 @@ describe('re.asObject parser', function () {
         });
     });
 
+    it('postfix/smtp debug', function () {
+        assert.deepEqual(re.asObject('smtp', '3mhh843cz2zCpsL: enabling PIX workarounds: disable_esmtp delay_dotcrlf for 69.146.200.300[69.146.200.300]:25'),
+        {
+            debug: ' enabling PIX workarounds'
+        });
+    });
+
     it('postfix/cleanup message-id', function () {
         assert.deepEqual(re.asObject('cleanup', '3mKxs35RQsz7sXF: message-id=<3mKxs308vpz7sXd@mx14.example.net>'),
         {
@@ -318,5 +325,9 @@ describe('re.asObject parser', function () {
         {
             postscreen: 'WHITELISTED [10.2.2.91]:56553',
         });
+    });
+
+    it('empty args, empty result', function () {
+        assert.deepEqual(re.asObject('', ''), undefined);
     });
 });

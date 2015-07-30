@@ -80,7 +80,7 @@ var regex = {
 exports.asObject = function (type, line) {
     /* jshint maxstatements: 25 */
     if (!type || !line) {
-        console.log('ERROR: missing required arg');
+        console.error('missing required arg');
         return;
     }
     if ('postfix/' === type.substr(0,8)) type = type.substr(8);
@@ -157,11 +157,11 @@ function bounceAsObject (match) {
 
 function qmgrAsObject (line) {
     var match = line.match(regex.qmgr);
-    if (!match) {
-        match = line.match(regex['qmgr-removed']);
-        if (match) return { qid: match[1], action: 'removed' };
-        return;
+    if (match) {
+        match.shift();
+        return matchAsObject(match);
     }
-    match.shift();
-    return matchAsObject(match);
+
+    match = line.match(regex['qmgr-removed']);
+    if (match) return { qid: match[1], action: 'removed' };
 }
