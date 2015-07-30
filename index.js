@@ -131,19 +131,19 @@ function matchAsObject (match) {
 
 function smtpAsObject (line) {
     var match = line.match(regex.smtp);
-    if (!match) {
-        match = line.match(regex['smtp-conn-err']);
-        if (match) return {
-            action: 'delivery',
-            mx: match[1],
-            err: match[2]
-        };
-        match = line.match(regex['smtp-debug']);
-        if (match) return { debug: match[0] };
-        return;
+    if (match) {
+        match.shift();
+        return matchAsObject(match);
     }
-    match.shift();
-    return matchAsObject(match);
+
+    match = line.match(regex['smtp-conn-err']);
+    if (match) return {
+        action: 'delivery',
+        mx: match[1],
+        err: match[2]
+    };
+    match = line.match(regex['smtp-debug']);
+    if (match) return { debug: match[0] };
 }
 
 function bounceAsObject (match) {
