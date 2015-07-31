@@ -1,6 +1,7 @@
 'use strict';
 /* jshint maxlen: false, camelcase: false, maxstatements: false */
 var assert = require('assert');
+var util   = require('util');
 
 var re = require('../index');
 
@@ -223,6 +224,21 @@ describe('re.asObject parser', function () {
             dsn: '4.4.1',
             status: 'deferred (delivery temporarily suspended: connect to 24.200.177.247[24.200.177.247]:25: Connection timed out)',
         });
+    });
+
+    it('postfix/error', function () {
+        var result = re.asObject('postfix/error', '3lz2cf24l8z2yfC: to=<root@localhost.example.net>, orig_to=<root@localhost>, relay=none, delay=3146377, delays=3146377/0.17/0/0.01, dsn=4.4.1, status=deferred (delivery temporarily suspended: connect to 127.0.0.2[127.0.0.2]:25: Connection refused)');
+        assert.deepEqual(result, {
+            qid: '3lz2cf24l8z2yfC',
+            to: 'root@localhost.example.net',
+            orig_to: 'root@localhost',
+            relay: 'none',
+            delay: '3146377',
+            delays: '3146377/0.17/0/0.01',
+            dsn: '4.4.1',
+            status: 'deferred (delivery temporarily suspended: connect to 127.0.0.2[127.0.0.2]:25: Connection refused)'
+        },
+        util.inspect(result));
     });
 
     it('postfix/local', function () {

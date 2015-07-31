@@ -50,6 +50,7 @@ var regex = {
     'error' : new RegExp(
             '^(?:(' + postfixQidAny + '): )?' +
             '(to)=' + envEmailAddr + ', ' +
+            '(?:(orig_to)=' + envEmailAddr + ', )?' +
             '(relay)=([^,]+), ' +
             '(delay)=([^,]+), ' +
             '(delays)=([^,]+), ' +
