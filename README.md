@@ -2,15 +2,37 @@
 [![Coverage Status][cov-img]][cov-url]
 [![Code Climate][clim-img]][clim-url]
 
-## Postfix Parser
+# Postfix Parser
 
 It parses postfix log entries.
 
     var parser = require('postfix-parser');
 
-### asObject
 
-Exports and single function: asObject, which requires two positional arguments:
+# Functions
+
+## asObject
+
+Call with a syslog line:
+
+    parser.asObject('Jul  5 06:52:11 mx1 postfix/qmgr[20459]: 3mPVKl...');
+
+Returns an object:
+
+    {
+        date: 'Jul  5 06:52:11',
+        host: 'prd-mx1',
+        prog: 'postfix/qmgr',
+        pid: '20459',
+        qid: '3mPVKl0Mhjz7sXv',
+        size: '2666',
+        nrcpt: '2',
+    }
+
+
+## asObjectType
+
+requires two positional arguments:
 
 1. type (see Parser Types)
 2. a single line syslog entry (or snippet)
