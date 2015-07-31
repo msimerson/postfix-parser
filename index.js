@@ -78,7 +78,32 @@ var regex = {
     postscreen : new RegExp('^(.*)'),
 };
 
-exports.asObject = function (type, line) {
+exports.asObject = function (line) {
+
+    var match = line.match(regex.syslog);
+    if (!match) {
+        console.error('unparsable syslog: ' + line);
+        return;
+    }
+
+    var syslog = syslogAsObject(match);
+    if (!/^postfix/.test(syslog.prog)) return; // not postfix, ignore
+
+    var parsed = exports.asObjectType(syslog.prog, syslog.msg);
+    if (!parsed) {
+        console.error('unparsable ' + syslog.prog + ': ' + syslog.msg);
+        return;
+    }
+
+    ['date','host','prog','pid'].forEach(function (f) {
+        if (!syslog[f]) return;
+        parsed[f] = syslog[f];
+    });
+
+    return parsed;
+};
+
+exports.asObjectType = function (type, line) {
     /* jshint maxstatements: 25 */
     if (!type || !line) {
         console.error('missing required arg');
