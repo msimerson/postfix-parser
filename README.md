@@ -104,8 +104,9 @@ requires two positional arguments:
         status: 'sent (250 2.0.0 t5UI2nBt018923-t5UI2nBw018923 Message accepted for delivery)',
     }
 
-    // do something clever with that beautifully parsed data
-    // may I suggest, [log-ship-elasticsearch-postfix](https://github.com/DoubleCheck/log-ship-elasticsearch-postfix)
+Do something clever with that beautifully parsed data.
+
+I suggest, [log-ship-elastic-postfix](https://github.com/DoubleCheck/log-ship-elastic-postfix).
 
 ### cleanup
 ### error
@@ -118,7 +119,7 @@ Each postfix program has its own format. See the test file for complete examples
 
 ## See also
 
-See [log-ship-elasticsearch-postfix](https://github.com/DoubleCheck/log-ship-elasticsearch-postfix) for an example of combining all log entries for a message into a normalized document.
+See [log-ship-elastic-postfix](https://github.com/DoubleCheck/log-ship-elastic-postfix) for an example of combining all log entries for a single message into a normalized document.
 
 
 [ci-img]: https://travis-ci.org/DoubleCheck/postfix-parser.svg
