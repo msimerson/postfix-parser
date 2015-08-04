@@ -22,9 +22,11 @@ var regex = {
             '(status)=(.*)$'
         ),
     'smtp-conn-err': /^connect to ([^\s]+): (.*)$/,
-    'smtp-debug': new RegExp('( enabling PIX workarounds|' +
-            'Cannot start TLS: handshake failure|: lost connection with |' +
-            '^SSL_connect error to |^warning: no MX host for |' +
+    'smtp-debug': new RegExp(
+            '(?:(' + postfixQidAny + '): )?' +
+            '(enabling PIX workarounds|' +
+            'Cannot start TLS: handshake failure|lost connection with .*|' +
+            '^SSL_connect error to .*|^warning: no MX host for |' +
             '^warning: TLS library problem:|^warning: numeric domain name|' +
             ': conversation with |: host )'),
     qmgr : new RegExp(
@@ -168,8 +170,14 @@ function smtpAsObject (line) {
         mx: match[1],
         err: match[2]
     };
+
     match = line.match(regex['smtp-debug']);
-    if (match) return { debug: match[0] };
+    if (!match) return;
+    if (match[1] && match[2]) return {
+        qid: match[1],
+        debug: match[2],
+    };
+    return { debug: match[0] };
 }
 
 function bounceAsObject (match) {

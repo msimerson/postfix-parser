@@ -193,9 +193,46 @@ var postfixLines = [
     {
         line: '3mhh843cz2zCpsL: enabling PIX workarounds: disable_esmtp delay_dotcrlf for 69.146.200.300[69.146.200.300]:25',
         type: 'postfix/smtp',
-        desc: 'debug',
+        desc: 'debug, PIX workarounds',
         obj: {
-            debug: ' enabling PIX workarounds'
+            qid: '3mhh843cz2zCpsL',
+            debug: 'enabling PIX workarounds'
+        }
+    },
+    {
+        line: '3mPz615lB2z7sZt: Cannot start TLS: handshake failure',
+        type: 'postfix/smtp',
+        desc: 'debug, TLS handshake failure',
+        obj: {
+            qid: '3mPz615lB2z7sZt',
+            debug: 'Cannot start TLS: handshake failure'
+        }
+    },
+    {
+        line: '3mNGjj1hQsz7sXh: lost connection with email.bar.com.foo.psmtp.com[64.300.200.26] while sending DATA command',
+        type: 'postfix/smtp',
+        desc: 'debug, lost connection',
+        obj: {
+            qid: '3mNGjj1hQsz7sXh',
+            debug: 'lost connection with email.bar.com.foo.psmtp.com[64.300.200.26] while sending DATA command'
+        }
+    },
+    {
+        line: 'connect to gmail-smtp-in.l.google.com[2607:f8b0:4002:c06::1a]:25: Network is unreachable',
+        type: 'postfix/smtp',
+        desc: 'debug, network unreachable',
+        obj: {
+            action: 'delivery',
+            mx: 'gmail-smtp-in.l.google.com[2607:f8b0:4002:c06::1a]:25',
+            err: 'Network is unreachable'
+        }
+    },
+    {
+        line: 'SSL_connect error to 64.200.28.300[64.200.28.300]:25: lost connection',
+        type: 'postfix/smtp',
+        desc: 'debug, SSL_connect',
+        obj: {
+            debug: 'SSL_connect error to 64.200.28.300[64.200.28.300]:25: lost connection'
         }
     },
     {
