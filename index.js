@@ -1,6 +1,6 @@
 'use strict';
 
-if (process.env.COVERAGE) require('blanket');
+var logger = require('./lib/logger');
 
 var envEmailAddr   = '<([^>]*)>';
 var postfixQid     = '[0-9A-F]{10,11}';     // default queue ids
@@ -10,7 +10,7 @@ var postfixQidAny  = postfixQidLong + '|' + postfixQid;
 var regex = {
     /* jshint maxlen: 100 */
     syslog: /^([A-Za-z]{3} [0-9 ]{2} [\d:]{8}) ([^\s]+) ([^\[]+)\[([\d]+)\]: (.*)$/,
-    smtp : new RegExp(
+    smtp: new RegExp(
             '^(?:(' + postfixQidAny + '): )?' +
             '(to)=' + envEmailAddr + ', ' +
             '(?:(orig_to)=' + envEmailAddr + ', )?' +
@@ -21,19 +21,19 @@ var regex = {
             '(dsn)=([^,]+), ' +
             '(status)=(.*)$'
         ),
-    'smtp-defer' : new RegExp(
+    'smtp-defer': new RegExp(
         '^(?:(' + postfixQidAny + '): )?' +
         '(?:host) ([^ ]+) ' +
         '(?:said|refused to talk to me): ' +
         '(4[0-9]{2} .*)$'
         // '(?: \\(in reply to (?:end of )?([A-Z ]+) command\\))*'
         ),
-    'smtp-timeout' : new RegExp(
+    'smtp-timeout': new RegExp(
         '^(?:(' + postfixQidAny + '): )?' +
         'conversation with ([^ ]+) ' +
         'timed out ' + '(.*)$'
         ),
-    'smtp-reject' : new RegExp(
+    'smtp-reject': new RegExp(
         '^(?:(' + postfixQidAny + '): )?' +
         'host ([^ ]+) ' +
         '(?:said|refused to talk to me): (5[0-9]{2}.*)$'
@@ -49,7 +49,7 @@ var regex = {
             'conversation with |' +
             'host )'
         ),
-    qmgr : new RegExp(
+    qmgr: new RegExp(
             '^(?:(' + postfixQidAny + '): )?' +
             '(from)=' + envEmailAddr + ', ' +
             '(?:' +
@@ -61,21 +61,21 @@ var regex = {
         ),
     'qmgr-removed': new RegExp('^(' + postfixQidAny + '): removed'),
     // postfix sometimes truncates the message-id, so don't require ending >
-    cleanup : new RegExp(
+    cleanup: new RegExp(
             '^(?:(' + postfixQidAny + '): )?' +
             '((?:resent-)?message-id)=<(.*?)>?$'
         ),
-    pickup : new RegExp(
+    pickup: new RegExp(
             '^(?:(' + postfixQidAny + '): )?' +
             '(uid)=([0-9]+) ' +
             '(from)=' + envEmailAddr
         ),
-    'pickup-warning' : new RegExp(
+    'pickup-warning': new RegExp(
             '^warning: ' +
             '(' + postfixQidAny + '): ' +
             '(.*)$'
         ),
-    'error' : new RegExp(
+    error: new RegExp(
             '^(?:(' + postfixQidAny + '): )?' +
             '(to)=' + envEmailAddr + ', ' +
             '(?:(orig_to)=' + envEmailAddr + ', )?' +
@@ -85,23 +85,23 @@ var regex = {
             '(dsn)=([^,]+), ' +
             '(status)=(.*)$'
         ),
-    'error-warning' : new RegExp(
+    'error-warning': new RegExp(
         '^warning: ' +
             '(' + postfixQidAny + '): ' +
             '(.*)$'
         ),
-    bounce : new RegExp(
+    bounce: new RegExp(
             '^(?:(' + postfixQidAny + '): )?' +
             'sender non-delivery notification: ' +
             '(' + postfixQidAny + '$)'
         ),
-    'bounce-fatal' : new RegExp(
+    'bounce-fatal': new RegExp(
             '^fatal: ' +
             '(.*?) ' +
             '(' + postfixQidAny + '): ' +
             '(.*)$'
         ),
-    local : new RegExp(
+    local: new RegExp(
             '^(?:(' + postfixQidAny + '): )?' +
             '(to)=' + envEmailAddr + ', ' +
             '(?:(orig_to)=' + envEmailAddr + ', )?' +
@@ -111,16 +111,16 @@ var regex = {
             '(dsn)=([^,]+), ' +
             '(status)=(sent .*)$'
         ),
-    forwardedAs : new RegExp('forwarded as (' + postfixQidAny + ')\\)'),
-    scache : new RegExp('^statistics: (.*)'),
-    postscreen : new RegExp('^(.*)'),
+    forwardedAs: new RegExp('forwarded as (' + postfixQidAny + ')\\)'),
+    scache: new RegExp('^statistics: (.*)'),
+    postscreen: new RegExp('^(.*)'),
 };
 
 exports.asObject = function (line) {
 
     var match = line.match(regex.syslog);
     if (!match) {
-        console.error('unparsable syslog: ' + line);
+        logger.error('unparsable syslog: ' + line);
         return;
     }
 
@@ -129,7 +129,7 @@ exports.asObject = function (line) {
 
     var parsed = exports.asObjectType(syslog.prog, syslog.msg);
     if (!parsed) {
-        console.error('unparsable ' + syslog.prog + ': ' + syslog.msg);
+        logger.error('unparsable ' + syslog.prog + ': ' + syslog.msg);
         return;
     }
 
@@ -144,7 +144,7 @@ exports.asObject = function (line) {
 exports.asObjectType = function (type, line) {
     /* jshint maxstatements: 25 */
     if (!type || !line) {
-        console.error('missing required arg');
+        logger.error('missing required arg');
         return;
     }
     if ('postfix/' === type.substr(0,8)) type = type.substr(8);
@@ -170,7 +170,7 @@ function syslogAsObject (match) {
         date: match[1],
         host: match[2],
         prog: match[3],
-        pid : match[4],
+        pid:  match[4],
         msg:  match[5],
     };
 }
