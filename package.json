@@ -11,7 +11,7 @@
   "version": "1.0.0",
   "private": false,
   "homepage": "https://github.com/DoubleCheck/postfix-parser",
-  "author" : {
+  "author": {
     "name": "Matt Simerson"
   },
   "repository": {
@@ -24,7 +24,10 @@
   },
   "config": {
     "blanket": {
-      "pattern": "index.js",
+      "pattern": [
+        "index.js",
+        "lib"
+      ],
       "data-cover-never": [
         "node_modules",
         "test"
@@ -38,6 +41,9 @@
   "devDependencies": {
     "blanket": "^1.1.7",
     "coveralls": "^2.11.2",
+    "grunt": ">=0.4.5",
+    "grunt-eslint": "^17.0.0",
+    "grunt-version-check": ">=0.2.1",
     "mocha": "^2.2.5",
     "mocha-lcov-reporter": "0.0.2",
     "travis-cov": "^0.2.5"
@@ -45,9 +51,10 @@
   "bugs": {
     "url": "https://github.com/DoubleCheck/postfix-parser/issues"
   },
-  "license" : "BSD-2-Clause",
+  "license": "BSD-2-Clause",
   "scripts": {
-    "test": "mocha",
+    "lint": "grunt lint",
+    "test": "NODE_ENV=test mocha",
     "coverage": "COVERAGE=1 ./node_modules/.bin/mocha --require blanket --reporter travis-cov",
     "coveralls": "COVERAGE=1 ./node_modules/.bin/mocha --require blanket --reporter mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js"
   }

@@ -71,7 +71,7 @@ describe('syslog lines', function () {
         syslogLines.forEach(function (test) {    
             it(test.name, function () {
                 var res = re.asObject(test.line);
-                assert.deepEqual(res, test.obj, util.inspect(res, {depth: null}));
+                assert.deepEqual(res, test.obj, util.inspect(res, { depth: null }));
             });
         });
     });
@@ -354,7 +354,7 @@ var postfixLines = [
         desc: '',
         obj: {
             qid: '3mKxs308vpz7sXd',
-            'uid': '1206',
+            uid: '1206',
             from: 'system',
         }
     },
@@ -363,7 +363,7 @@ var postfixLines = [
         type: 'postfix/pickup',
         desc: 'w/o queue ID',
         obj: {
-            'uid': '1206',
+            uid : '1206',
             from: 'system',
         }
     },
