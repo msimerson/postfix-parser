@@ -122,6 +122,8 @@ Each postfix program has its own format. See the test file for complete examples
 See [log-ship-elastic-postfix](https://github.com/DoubleCheck/log-ship-elastic-postfix) for an example of combining all log entries for a single message into a normalized document.
 
 
+<sub>Copyright 2015 by eFolder, Inc.</sub>
+
 [ci-img]: https://travis-ci.org/DoubleCheck/postfix-parser.svg
 [ci-url]: https://travis-ci.org/DoubleCheck/postfix-parser
 [cov-img]: https://coveralls.io/repos/DoubleCheck/postfix-parser/badge.svg

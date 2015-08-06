@@ -151,7 +151,6 @@ var postfixLines = [
             status: 'deferred (connect to dc-452452f6.bar.com[63.200.300.49]:25: Connection timed out)',
         }
     },
-
     {
         line: '3mPVKl0Mhjz7sXv: to=<rob@example.com>, relay=mailfilter.example-dom.com[63.200.2.118]:25, conn_use=2, delay=4.4, delays=2/2.2/0.02/0.14, dsn=2.0.0, status=sent (250 ok: Message 7295650 accepted)',
         type: 'postfix/smtp',
@@ -196,7 +195,7 @@ var postfixLines = [
         desc: 'debug, PIX workarounds',
         obj: {
             qid: '3mhh843cz2zCpsL',
-            debug: 'enabling PIX workarounds'
+            msg: 'enabling PIX workarounds'
         }
     },
     {
@@ -205,7 +204,7 @@ var postfixLines = [
         desc: 'debug, TLS handshake failure',
         obj: {
             qid: '3mPz615lB2z7sZt',
-            debug: 'Cannot start TLS: handshake failure'
+            msg: 'Cannot start TLS: handshake failure'
         }
     },
     {
@@ -214,7 +213,7 @@ var postfixLines = [
         desc: 'debug, lost connection',
         obj: {
             qid: '3mNGjj1hQsz7sXh',
-            debug: 'lost connection with email.bar.com.foo.psmtp.com[64.300.200.26] while sending DATA command'
+            msg: 'lost connection with email.bar.com.foo.psmtp.com[64.300.200.26] while sending DATA command'
         }
     },
     {
@@ -232,7 +231,86 @@ var postfixLines = [
         type: 'postfix/smtp',
         desc: 'debug, SSL_connect',
         obj: {
-            debug: 'SSL_connect error to 64.200.28.300[64.200.28.300]:25: lost connection'
+            msg: 'SSL_connect error to 64.200.28.300[64.200.28.300]:25: lost connection'
+        }
+    },
+    {
+        line: 'warning: numeric domain name in resource data of MX record for mail5.sportsmansguide.com: 207.67.19.85',
+        type: 'postfix/smtp',
+        desc: 'debug, numeric domain name',
+        obj: {
+            msg: 'warning: numeric domain name in resource data of MX record for mail5.sportsmansguide.com: 207.67.19.85'
+        }
+    },
+    {
+        line: 'warning: TLS library problem: error:14082174:SSL routines:SSL3_CHECK_CERT_AND_ALGORITHM:dh key too small:s3_clnt.c:3347:',
+        type: 'postfix/smtp',
+        desc: 'debug, TLS problem',
+        obj: {
+            msg: 'warning: TLS library problem: error:14082174:SSL routines:SSL3_CHECK_CERT_AND_ALGORITHM:dh key too small:s3_clnt.c:3347:'
+        }
+    },
+    {
+        line: 'warning: valid_hostname: invalid character 92(decimal): 1\\032ASPMX.L.GOOGLE.com',
+        type: 'postfix/smtp',
+        desc: 'debug, invalid char',
+        obj: {
+            msg: 'warning: valid_hostname: invalid character 92(decimal): 1\\032ASPMX.L.GOOGLE.com'
+        }
+    },
+    {
+        line: '3mQvyg5v2rz7sWq: host forward20.example.com[216.200.106.61] said: 450 4.7.1 <sam@example.com>: Recipient address rejected: Greylisted for 20 minutes (in reply to RCPT TO command)',
+        type: 'postfix/smtp',
+        desc: 'deferral, greylisted',
+        obj: {
+            qid: '3mQvyg5v2rz7sWq',
+            action: 'defer',
+            host: 'forward20.example.com[216.200.106.61]',
+            msg: '450 4.7.1 <sam@example.com>: Recipient address rejected: Greylisted for 20 minutes (in reply to RCPT TO command)',
+        }
+    },
+    {
+        line: '3mQysW0hLfz7sX5: host boing001.topica.com[66.227.60.140] said: 451 qq write error or disk full (#4.3.0) (in reply to end of DATA command)',
+        type: 'postfix/smtp',
+        desc: 'deferral, disk full',
+        obj: {
+            qid: '3mQysW0hLfz7sX5',
+            action: 'defer',
+            host: 'boing001.topica.com[66.227.60.140]',
+            msg: '451 qq write error or disk full (#4.3.0) (in reply to end of DATA command)',
+        }
+    },
+    {
+        line: "3mR69k6Fm0z7sX4: host smtp2.hiltonhhonors.net[159.127.185.42] refused to talk to me: 554-smtp2.hiltonhhonors.net 554 Your access to this mail system has been rejected due to the sending MTA's poor reputation. If you believe that this failure is in error, please contact the intended recipient via alternate means.",
+        type: 'postfix/smtp',
+        desc: 'reject',
+        obj: {
+            qid: '3mR69k6Fm0z7sX4',
+            action: 'reject',
+            host: 'smtp2.hiltonhhonors.net[159.127.185.42]',
+            msg: "554-smtp2.hiltonhhonors.net 554 Your access to this mail system has been rejected due to the sending MTA's poor reputation. If you believe that this failure is in error, please contact the intended recipient via alternate means.",
+        }
+    },
+    {
+        line: '3mS03L6qGtz7sVr: host mx1-us1.ppe-hosted.com[67.231.154.163] refused to talk to me: 421 4.3.2 All screening ports are busy',
+        type: 'postfix/smtp',
+        desc: 'defer',
+        obj: {
+            qid: '3mS03L6qGtz7sVr',
+            action: 'defer',
+            host: 'mx1-us1.ppe-hosted.com[67.231.154.163]',
+            msg: '421 4.3.2 All screening ports are busy',
+        }
+    },
+    {
+        line: '3mRyTc5Y5Nz7sXc: conversation with smtpb.mail.medcity.net[199.91.36.34] timed out while receiving the initial server greeting',
+        type: 'postfix/smtp',
+        desc: 'defer, timed out',
+        obj: {
+            qid: '3mRyTc5Y5Nz7sXc',
+            action: 'defer',
+            host: 'smtpb.mail.medcity.net[199.91.36.34]',
+            msg: 'while receiving the initial server greeting',
         }
     },
     {
@@ -243,7 +321,7 @@ var postfixLines = [
             qid: '3mKxs35RQsz7sXF',
             'message-id': '3mKxs308vpz7sXd@mx14.example.net',
         }
-    },
+    },    
     {
         line: 'message-id=<3mKxs308vpz7sXd@mx14.example.net>',
         type: 'postfix/cleanup',
@@ -259,6 +337,15 @@ var postfixLines = [
         obj: {
             qid: '3mL1Hq0Tgvz7sWh',
             'resent-message-id': '3mL1Hq0Tgvz7sWh@mx14.example.net',
+        }
+    },
+    {
+        line: '3mgs0P5v1lz7sh1: resent-message-id=<DM2PR0801MB602DCC95DD755B7E98634E0EE8D0@DM2PR0801MB602.namp',
+        type: 'postfix/cleanup',
+        desc: 'resent-message-id truncated',
+        obj: {
+            qid: '3mgs0P5v1lz7sh1',
+            'resent-message-id': 'DM2PR0801MB602DCC95DD755B7E98634E0EE8D0@DM2PR0801MB602.namp',
         }
     },
     {
@@ -278,6 +365,15 @@ var postfixLines = [
         obj: {
             'uid': '1206',
             from: 'system',
+        }
+    },
+    {
+        line: 'warning: 3mCqcj5HR1z2xDW: message has been queued for 2 days',
+        type: 'postfix/pickup',
+        desc: '2 day warning',
+        obj: {
+            qid: '3mCqcj5HR1z2xDW',
+            msg: 'message has been queued for 2 days',
         }
     },
     {
@@ -305,6 +401,15 @@ var postfixLines = [
             delays: '165276/0.09/0/0.09',
             dsn: '4.4.1',
             status: 'deferred (delivery temporarily suspended: connect to 24.200.177.247[24.200.177.247]:25: Connection timed out)',
+        }
+    },
+    {
+        line: 'warning: 3lyw1l0Nwdz2xGs: defer service failure',
+        type: 'postfix/error',
+        desc: 'warning, service failure',
+        obj: {
+            qid: '3lyw1l0Nwdz2xGs',
+            msg: 'defer service failure',
         }
     },
     {
@@ -337,6 +442,21 @@ var postfixLines = [
         }
     },
     {
+        line: '486ED600A5: to=<system@prd.slc.example.net>, orig_to=<system>, relay=local, delay=0.01, delays=0.01/0/0/0, dsn=2.0.0, status=sent (delivered to mailbox)',
+        type: 'postfix/local',
+        desc: 'short qid',
+        obj: {
+            qid: '486ED600A5',
+            to: 'system@prd.slc.example.net',
+            orig_to: 'system',
+            relay: 'local',
+            delay: '0.01',
+            delays: '0.01/0/0/0',
+            dsn: '2.0.0',
+            status: 'sent (delivered to mailbox)',
+        }
+    },
+    {
         line: '3mKxY750hmz7scK: sender non-delivery notification: 3mKxYH0vl4z7sWS',
         type: 'postfix/bounce',
         desc: '',
@@ -351,6 +471,15 @@ var postfixLines = [
         desc: 'w/o queue ID',
         obj: {
             dsnQid: '3mKxYH0vl4z7sWS',
+        }
+    },
+    {
+        line: 'fatal: append file defer 3lyw0Z2NdSz2xGb: No space left on device',
+        type: 'postfix/bounce',
+        desc: 'fatal, disk full',
+        obj: {
+            qid: '3lyw0Z2NdSz2xGb',
+            msg: 'fatal: append file defer: No space left on device',
         }
     },
     {
@@ -438,7 +567,8 @@ describe('postfix lines', function () {
     describe('asObjectType', function () {
         postfixLines.forEach(function (test) {
             it(test.type + (test.desc ? ' ' + test.desc : ''), function () {
-                assert.deepEqual(re.asObjectType(test.type, test.line), test.obj);
+                var res = re.asObjectType(test.type, test.line);
+                assert.deepEqual(res, test.obj); // , util.inspect(res, {depth: null}));
             });
         });
     });
