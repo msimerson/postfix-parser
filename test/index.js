@@ -1,5 +1,4 @@
 'use strict';
-/* jshint maxlen: false, camelcase: false, maxstatements: false */
 
 var assert = require('assert');
 var util   = require('util');
