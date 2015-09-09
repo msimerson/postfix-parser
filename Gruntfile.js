@@ -10,7 +10,12 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     eslint: {
-      target: ['Gruntfile.js','index.js','lib/**/*.js']
+      main: {
+        src: ['Gruntfile.js','index.js','lib/**/*.js']
+      },
+      test: {
+        src: ['test/**/*.js'],
+      }
     },
     mochaTest: {
       options: {

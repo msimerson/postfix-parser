@@ -146,19 +146,33 @@ exports.asObjectType = function (type, line) {
     return;
   }
   if ('postfix/' === type.substr(0,8)) type = type.substr(8);
-  if (type === 'qmgr') return qmgrAsObject(line);
-  if (type === 'smtp') return smtpAsObject(line);
-  if (type === 'pickup') return pickupAsObject(line);
-  if (type === 'error') return errorAsObject(line);
-  if (type === 'bounce') return bounceAsObject(line);
+
+  switch (type) {
+    case 'qmgr':
+      return qmgrAsObject(line);
+    case 'smtp':
+      return smtpAsObject(line);
+    case 'pickup':
+      return pickupAsObject(line);
+    case 'error':
+      return errorAsObject(line);
+    case 'bounce':
+      return bounceAsObject(line);
+  }
 
   var match = line.match(regex[type]);
   if (!match) return;
 
-  if (type === 'syslog') return syslogAsObject(match);
-  if (type === 'scache') return { statistics: match[1] };
-  if (type === 'postscreen') return { postscreen: match[1] };
-  if (type === 'local')  return localAsObject(match);
+  switch (type) {
+    case 'syslog':
+      return syslogAsObject(match);
+    case 'scache':
+      return { statistics: match[1] };
+    case 'postscreen':
+      return { postscreen: match[1] };
+    case 'local':
+      return localAsObject(match);
+  }
 
   return matchAsObject(match);
 };
@@ -187,13 +201,13 @@ function matchAsObject (match) {
 }
 
 function errorAsObject (line) {
-  var match = line.match(regex.error);
-  if (match) return matchAsObject(match);
+  var errMatch = line.match(regex.error);
+  if (errMatch) return matchAsObject(errMatch);
 
-  match = line.match(regex['error-warning']);
-  if (match) return {
-    qid: match[1],
-    msg: match[2],
+  errMatch = line.match(regex['error-warning']);
+  if (errMatch) return {
+    qid: errMatch[1],
+    msg: errMatch[2],
   };
 }
 
