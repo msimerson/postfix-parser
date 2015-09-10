@@ -529,7 +529,7 @@ var postfixLines = [
     desc: 'removed',
     obj: {
       qid: '3l8L6X6lCPz7t2M',
-      action: 'removed',
+      msg: 'removed',
     }
   },
   {
