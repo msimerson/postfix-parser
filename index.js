@@ -211,42 +211,52 @@ function smtpAsObject (line) {
   if (match) return matchAsObject(match);
 
   match = line.match(regex['smtp-conn-err']);
-  if (match) return {
-    action: 'delivery',
-    mx: match[1],
-    err: match[2]
-  };
+  if (match) {
+    return {
+      action: 'delivery',
+      mx: match[1],
+      err: match[2]
+    };
+  }
 
   match = line.match(regex['smtp-defer']);
-  if (match) return {
-    action: 'defer',
-    qid: match[1],
-    host: match[2],
-    msg: match[3]
-  };
+  if (match) {
+    return {
+      action: 'defer',
+      qid: match[1],
+      host: match[2],
+      msg: match[3]
+    };
+  }
 
   match = line.match(regex['smtp-reject']);
-  if (match) return {
-    action: 'reject',
-    qid: match[1],
-    host: match[2],
-    msg: match[3],
-  };
+  if (match) {
+    return {
+      action: 'reject',
+      qid: match[1],
+      host: match[2],
+      msg: match[3],
+    };
+  }
 
   match = line.match(regex['smtp-timeout']);
-  if (match) return {
-    action: 'defer',
-    qid: match[1],
-    host: match[2],
-    msg: match[3],
-  };
+  if (match) {
+    return {
+      action: 'defer',
+      qid: match[1],
+      host: match[2],
+      msg: match[3],
+    };
+  }
 
   match = line.match(regex['smtp-debug']);
   if (!match) return;
-  if (match[1] && match[2]) return {
-    qid: match[1],
-    msg: match[2],
-  };
+  if (match[1] && match[2]) {
+    return {
+      qid: match[1],
+      msg: match[2],
+    };
+  }
   return { msg: match[0] };
 }
 
@@ -263,10 +273,12 @@ function bounceAsObject (line) {
   }
 
   match = line.match(regex['bounce-fatal']);
-  if (match) return {
-    qid: match[2],
-    msg: 'fatal: ' + match[1] + ': ' + match[3]
-  };
+  if (match) {
+    return {
+      qid: match[2],
+      msg: 'fatal: ' + match[1] + ': ' + match[3]
+    };
+  }
 }
 
 function localAsObject(match) {
