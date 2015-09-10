@@ -58,7 +58,7 @@ var regex = {
         '(status)=(.*)$' +
         ')'
        ),
-  'qmgr-removed': new RegExp('^(' + postfixQidAny + '): removed'),
+  'qmgr-retry': new RegExp('^(' + postfixQidAny + '): (removed)'),
   // postfix sometimes truncates the message-id, so don't require ending >
   cleanup: new RegExp(
       '^(?:(' + postfixQidAny + '): )?' +
@@ -69,7 +69,7 @@ var regex = {
       '(uid)=([0-9]+) ' +
       '(from)=' + envEmailAddr
       ),
-  'pickup-warning': new RegExp(
+  'pickup-retry': new RegExp(
        '^warning: ' +
        '(' + postfixQidAny + '): ' +
      '(.*)$'
@@ -84,7 +84,7 @@ var regex = {
        '(dsn)=([^,]+), ' +
        '(status)=(.*)$'
        ),
-  'error-warning': new RegExp(
+  'error-retry': new RegExp(
        '^warning: ' +
        '(' + postfixQidAny + '): ' +
      '(.*)$'
@@ -149,13 +149,11 @@ exports.asObjectType = function (type, line) {
 
   switch (type) {
     case 'qmgr':
-      return qmgrAsObject(line);
+    case 'pickup':
+    case 'error':
+      return argAsObject(type, line);
     case 'smtp':
       return smtpAsObject(line);
-    case 'pickup':
-      return pickupAsObject(line);
-    case 'error':
-      return errorAsObject(line);
     case 'bounce':
       return bounceAsObject(line);
   }
@@ -200,26 +198,12 @@ function matchAsObject (match) {
   return obj;
 }
 
-function errorAsObject (line) {
-  var errMatch = line.match(regex.error);
-  if (errMatch) return matchAsObject(errMatch);
-
-  errMatch = line.match(regex['error-warning']);
-  if (errMatch) return {
-    qid: errMatch[1],
-    msg: errMatch[2],
-  };
-}
-
-function pickupAsObject (line) {
-  var match = line.match(regex.pickup);
+function argAsObject (thing, line) {
+  var match = line.match(regex[thing]);
   if (match) return matchAsObject(match);
 
-  match = line.match(regex['pickup-warning']);
-  if (match) return {
-    qid: match[1],
-    msg: match[2],
-  };
+  match = line.match(regex[thing + '-retry']);
+  if (match) return { qid: match[1], msg: match[2] };
 }
 
 function smtpAsObject (line) {
@@ -283,14 +267,6 @@ function bounceAsObject (line) {
     qid: match[2],
     msg: 'fatal: ' + match[1] + ': ' + match[3]
   };
-}
-
-function qmgrAsObject (line) {
-  var match = line.match(regex.qmgr);
-  if (match) return matchAsObject(match);
-
-  match = line.match(regex['qmgr-removed']);
-  if (match) return { qid: match[1], action: 'removed' };
 }
 
 function localAsObject(match) {
