@@ -28,12 +28,27 @@ var syslogLines = [
     line: 'Jul  5 06:52:11 prd-mx1 postfix/qmgr[20459]: 3mPVKl0Mhjz7sXv: from=<>, size=2666, nrcpt=2 (queue active)',
     obj: {
       qid: '3mPVKl0Mhjz7sXv',
+      from: '',
       size: '2666',
       nrcpt: '2',
       date: 'Jul  5 06:52:11',
       host: 'prd-mx1',
       prog: 'postfix/qmgr',
-      pid: '20459',            
+      pid: '20459',
+    }
+  },
+  {
+    name: 'postfix/qmgr, no angle brackets',
+    line: 'Sep 25 12:07:56 rory-dev postfix/qmgr[1626]: ED373F8043E: from=rory@rory-dev.localdomain, size=270, nrcpt=1 (queue active)',
+    obj: {
+      qid: 'ED373F8043E',
+      from: 'rory@rory-dev.localdomain',
+      size: '270',
+      nrcpt: '1',
+      date: 'Sep 25 12:07:56',
+      host: 'rory-dev',
+      prog: 'postfix/qmgr',
+      pid: '1626',
     }
   },
   {
@@ -67,7 +82,7 @@ var syslogLines = [
 
 describe('syslog lines', function () {
   context('asObject', function () {
-    syslogLines.forEach(function (test) {    
+    syslogLines.forEach(function (test) {
       it(test.name, function () {
         var res = re.asObject(test.line);
         assert.deepEqual(res, test.obj, util.inspect(res, { depth: null }));
@@ -320,7 +335,7 @@ var postfixLines = [
       qid: '3mKxs35RQsz7sXF',
       'message-id': '3mKxs308vpz7sXd@mx14.example.net',
     }
-  },    
+  },
   {
     line: 'message-id=<3mKxs308vpz7sXd@mx14.example.net>',
     type: 'postfix/cleanup',

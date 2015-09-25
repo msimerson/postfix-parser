@@ -2,7 +2,7 @@
 
 var logger = require('./lib/logger');
 
-var envEmailAddr   = '<([^>]*)>';
+var envEmailAddr   = '<?([^>,]*)>?';
 var postfixQid     = '[0-9A-F]{10,11}';     // default queue ids
 var postfixQidLong = '[0-9A-Za-z]{14,16}';  // optional 'long' ids
 var postfixQidAny  = postfixQidLong + '|' + postfixQid;
@@ -193,7 +193,9 @@ function matchAsObject (match) {
   while (match.length) {
     var key = match.shift();
     var val = match.shift();
-    if (key && val) obj[key] = val;
+    if (key === undefined) continue;
+    if (val === undefined) continue;
+    obj[key] = val;
   }
   return obj;
 }
