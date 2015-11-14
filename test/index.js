@@ -607,6 +607,15 @@ var postfixLines = [
       qid: '3nsRhm5bH5z306M',
       msg: 'removed',
     },
+  },
+  {
+    line: '3nsF2M5j0nz31GS: released from hold',
+    type: 'postfix/postsuper',
+    desc: 'release from quarantine',
+    obj: {
+      qid: '3nsF2M5j0nz31GS',
+      msg: 'released from hold',
+    },
   }
 ];
 
