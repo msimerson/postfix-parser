@@ -77,7 +77,19 @@ var syslogLines = [
     line: 'Jul  5 06:52:11 prd-mx1 postfix/smtp[22030]: 3mPVKl0Mhjz7sXv: to=<56597@con',
     name: 'truncated',
     obj: undefined,
-  }
+  },
+  {
+    name: 'postfix/postsuper',
+    line: 'Nov  6 01:01:03 mailq2 postfix/postsuper[1936]: 3nsRhm5bH5z306M: removed',
+    obj: {
+      date: 'Nov  6 01:01:03',
+      host: 'mailq2',
+      prog: 'postfix/postsuper',
+      pid: '1936',
+      msg: 'removed',
+      qid: '3nsRhm5bH5z306M',
+    },
+  },
 ];
 
 describe('syslog lines', function () {
@@ -586,6 +598,24 @@ var postfixLines = [
     type: 'postfix/smtp',
     desc: 'truncated',
     obj: undefined,
+  },
+  {
+    line: '3nsRhm5bH5z306M: removed',
+    type: 'postfix/postsuper',
+    desc: 'manual deletion from queue/quarantine',
+    obj: {
+      qid: '3nsRhm5bH5z306M',
+      msg: 'removed',
+    },
+  },
+  {
+    line: '3nsF2M5j0nz31GS: released from hold',
+    type: 'postfix/postsuper',
+    desc: 'release from quarantine',
+    obj: {
+      qid: '3nsF2M5j0nz31GS',
+      msg: 'released from hold',
+    },
   }
 ];
 

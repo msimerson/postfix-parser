@@ -111,8 +111,9 @@ var regex = {
        '(status)=(sent .*)$'
        ),
   forwardedAs: new RegExp('forwarded as (' + postfixQidAny + ')\\)'),
-  scache: new RegExp('^statistics: (.*)'),
-  postscreen: new RegExp('^(.*)'),
+  scache:      new RegExp('^statistics: (.*)'),
+  postscreen:  new RegExp('^(.*)'),
+  postsuper:   new RegExp('^(' + postfixQidAny + '): (.*)$'),
 };
 
 exports.asObject = function (line) {
@@ -170,6 +171,8 @@ exports.asObjectType = function (type, line) {
       return { postscreen: match[1] };
     case 'local':
       return localAsObject(match);
+    case 'postsuper':
+      return { qid: match[1], msg: match[2] };
   }
 
   return matchAsObject(match);
