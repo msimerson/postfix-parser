@@ -1,4 +1,8 @@
 
+# 1.0.4 - 2015-11-13
+
+    - add support for postfix/postsuper entries
+
 # 1.0.3 - 2015-09-25
 
     - don't require angle brackets on email addresses (#7)
