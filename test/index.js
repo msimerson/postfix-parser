@@ -69,6 +69,23 @@ var syslogLines = [
     }
   },
   {
+    name: 'postfix/smtp, w/o angle brackets',
+    line: 'Jul  5 06:52:11 prd-mx1 postfix/smtp[22030]: 3mPVKl0Mhjz7sXv: to=56597@continuity.delivery, relay=10.2.2.85[10.2.2.85]:2527, delay=0.51, delays=0.44/0.01/0.05/0.01, dsn=2.0.0, status=sent (250 2.0.0 Ok: queued as 3mPVKl3YVXz2pS5Z)',
+    obj: {
+      date: 'Jul  5 06:52:11',
+      host: 'prd-mx1',
+      prog: 'postfix/smtp',
+      pid: '22030',
+      qid: '3mPVKl0Mhjz7sXv',
+      to:  '56597@continuity.delivery',
+      relay: '10.2.2.85[10.2.2.85]:2527',
+      delay: '0.51',
+      delays: '0.44/0.01/0.05/0.01',
+      dsn: '2.0.0',
+      status: 'sent (250 2.0.0 Ok: queued as 3mPVKl3YVXz2pS5Z)',
+    }
+  },
+  {
     name: 'empty',
     line: '',
     obj: undefined,
@@ -551,6 +568,17 @@ var postfixLines = [
     }
   },
   {
+    line: '3mfHGL1r9gzyQP: from=<system>, size=813, nrcpt=1 (queue active)',
+    type: 'postfix/qmgr',
+    desc: 'newlkajd;fkjasd;flkjaskdfj',
+    obj: {
+      qid: '3mfHGL1r9gzyQP',
+      from: 'system',
+      size: '813',
+      nrcpt: '1',
+    }
+  },
+  {
     line: '3l8L6X6lCPz7t2M: removed',
     type: 'postfix/qmgr',
     desc: 'removed',
@@ -602,7 +630,7 @@ var postfixLines = [
   {
     line: '3nsRhm5bH5z306M: removed',
     type: 'postfix/postsuper',
-    desc: 'manual deletion from queue/quarantine',
+    desc: 'deletion from queue/quarantine',
     obj: {
       qid: '3nsRhm5bH5z306M',
       msg: 'removed',
