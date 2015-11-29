@@ -107,6 +107,20 @@ var syslogLines = [
       qid: '3nsRhm5bH5z306M',
     },
   },
+  {
+    name: 'postfix/submission/smtpd',
+    line: 'Nov 28 22:50:29 smtp postfix/submission/smtpd[70013]: 3p7RMT0zrYz20p: client=unknown[192.168.0.100], sasl_method=DIGEST-MD5, sasl_username=user@dmain.com',
+    obj: {
+      date: 'Nov 28 22:50:29',
+      host: 'smtp',
+      prog: 'postfix/submission/smtpd',
+      pid: '70013',
+      qid: '3p7RMT0zrYz20p',
+      client: 'unknown[192.168.0.100]',
+      sasl_method: 'DIGEST-MD5',
+      sasl_username: 'user@dmain.com',
+    }
+  }
 ];
 
 describe('syslog lines', function () {
