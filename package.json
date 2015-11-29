@@ -8,7 +8,7 @@
     "maillog",
     "mail.log"
   ],
-  "version": "1.0.4",
+  "version": "1.0.5",
   "private": false,
   "homepage": "https://github.com/DoubleCheck/postfix-parser",
   "author": {
@@ -22,32 +22,13 @@
   "engines": {
     "node": ">=0.10.0"
   },
-  "config": {
-    "blanket": {
-      "pattern": [
-        "index.js",
-        "lib"
-      ],
-      "data-cover-never": [
-        "node_modules",
-        "test"
-      ]
-    },
-    "travis-cov": {
-      "threshold": 100
-    }
-  },
   "dependencies": {},
   "devDependencies": {
-    "blanket": "*",
-    "coveralls": "*",
     "grunt": "*",
     "grunt-eslint": "*",
     "grunt-mocha-test": "*",
     "grunt-version-check": "*",
-    "mocha": "*",
-    "mocha-lcov-reporter": "*",
-    "travis-cov": "*"
+    "mocha": "*"
   },
   "bugs": {
     "url": "https://github.com/DoubleCheck/postfix-parser/issues"
@@ -55,8 +36,6 @@
   "license": "BSD-2-Clause",
   "scripts": {
     "lint": "grunt lint",
-    "test": "NODE_ENV=test mocha",
-    "coverage": "COVERAGE=1 ./node_modules/.bin/mocha --require blanket --reporter travis-cov",
-    "coveralls": "COVERAGE=1 ./node_modules/.bin/mocha --require blanket --reporter mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js"
+    "test": "NODE_ENV=test mocha"
   }
 }

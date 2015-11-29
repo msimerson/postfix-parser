@@ -9,6 +9,12 @@ var postfixQidAny  = postfixQidLong + '|' + postfixQid;
 
 var regex = {
   syslog: /^([A-Za-z]{3} [0-9 ]{2} [\d:]{8}) ([^\s]+) ([^\[]+)\[([\d]+)\]: (.*)$/,
+  'submission/smtpd': new RegExp(
+      '^(?:(' + postfixQidAny + '): )?' +
+      '(client)=([^,]+), ' +
+      '(sasl_method)=([^,]+), ' +
+      '(sasl_username)=(.*)$'
+      ),
   smtp: new RegExp(
       '^(?:(' + postfixQidAny + '): )?' +
       '(to)=' + envEmailAddr + ', ' +
@@ -152,6 +158,7 @@ exports.asObjectType = function (type, line) {
     case 'qmgr':
     case 'pickup':
     case 'error':
+    case 'submission/smtpd':
       return argAsObject(type, line);
     case 'smtp':
       return smtpAsObject(line);

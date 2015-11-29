@@ -31,4 +31,14 @@ describe('logger', function () {
       process.env.NODE_ENV='test';
     });
   });
+
+  if (process.env.COV) {
+    it('has full coverage', function (done) {
+      logger.debug('coverage test');
+      process.env.NODE_ENV = 'test';
+      logger.info('coverage test');
+      logger.error('coverage test');
+      done();
+    });
+  }
 });

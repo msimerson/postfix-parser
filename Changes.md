@@ -1,4 +1,8 @@
 
+# 1.0.5 - 2015-11-29
+
+    - add submission parsing (#13 by @urosgruber)
+
 # 1.0.4 - 2015-11-13
 
     - add support for postfix/postsuper entries
