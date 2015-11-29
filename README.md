@@ -89,7 +89,7 @@ This is comparable to what you'd already have in Elasticsearch if you had import
 ### qmgr
 
 ````js
-asObject('Jul  5 06:52:11 prd-mx1 postfix/qmgr[20459]: 3mPVKl0Mhjz7sXv: from=<>, size=2666, nrcpt=2 (queue active)');
+asObject('3mPVKl0Mhjz7sXv: from=<>, size=2666, nrcpt=2 (queue active)');
 ````
 
 Returns:
