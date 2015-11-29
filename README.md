@@ -97,12 +97,9 @@ Returns:
 ````js
 {
     qid: '3mPVKl0Mhjz7sXv',
+    from: ''
     size: '2666',
     nrcpt: '2',
-    date: 'Jul  5 06:52:11',
-    host: 'prd-mx1',
-    prog: 'postfix/qmgr',
-    pid: '20459',            
 }
 ````
 
