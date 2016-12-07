@@ -1,4 +1,6 @@
 
+    - update package metadata
+
 # 1.0.5 - 2015-11-29
 
     - add submission parsing (#13 by @urosgruber)

@@ -235,7 +235,7 @@ See [log-ship-elastic-postfix](https://github.com/DoubleCheck/log-ship-elastic-p
 
 [ci-img]: https://travis-ci.org/DoubleCheck/postfix-parser.svg
 [ci-url]: https://travis-ci.org/DoubleCheck/postfix-parser
-[cov-img]: https://codecov.io/github/DoubleCheck/postfix-parser/coverage.svg?branch=master
-[cov-url]: https://codecov.io/github/DoubleCheck/postfix-parser?branch=master
+[cov-img]: https://codecov.io/github/DoubleCheck/postfix-parser/coverage.svg
+[cov-url]: https://codecov.io/github/DoubleCheck/postfix-parser
 [clim-img]: https://codeclimate.com/github/DoubleCheck/postfix-parser/badges/gpa.svg
 [clim-url]: https://codeclimate.com/github/DoubleCheck/postfix-parser
