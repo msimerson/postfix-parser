@@ -8,15 +8,15 @@
     "maillog",
     "mail.log"
   ],
-  "version": "1.0.5",
+  "version": "1.0.6",
   "private": false,
-  "homepage": "https://github.com/DoubleCheck/postfix-parser",
+  "homepage": "https://github.com/msimerson/postfix-parser",
   "author": {
     "name": "Matt Simerson"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/DoubleCheck/postfix-parser.git"
+    "url": "git://github.com/msimerson/postfix-parser.git"
   },
   "main": "index.js",
   "engines": {
@@ -24,18 +24,14 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "grunt": "*",
-    "grunt-eslint": "*",
-    "grunt-mocha-test": "*",
-    "grunt-version-check": "*",
     "mocha": "*"
   },
   "bugs": {
-    "url": "https://github.com/DoubleCheck/postfix-parser/issues"
+    "url": "https://github.com/msimerson/postfix-parser/issues"
   },
   "license": "BSD-2-Clause",
   "scripts": {
-    "lint": "grunt lint",
-    "test": "NODE_ENV=test mocha"
+    "lint": "./node_modules/.bin/eslint index.js lib/*.js test/*.js",
+    "test": "NODE_ENV=test ./node_modules/.bin/mocha"
   }
 }
