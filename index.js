@@ -1,4 +1,3 @@
-'use strict';
 
 var logger = require('./lib/logger');
 
@@ -8,114 +7,114 @@ var postfixQidLong = '[0-9A-Za-z]{14,16}';  // optional 'long' ids
 var postfixQidAny  = postfixQidLong + '|' + postfixQid;
 
 var regex = {
-  syslog: /^([A-Za-z]{3} [0-9 ]{2} [\d:]{8}) ([^\s]+) ([^\[]+)\[([\d]+)\]: (.*)$/,
+  syslog: /^([A-Za-z]{3} [0-9 ]{2} [\d:]{8}) ([^\s]+) ([^[]+)\[([\d]+)\]: (.*)$/,
   'submission/smtpd': new RegExp(
-      '^(?:(' + postfixQidAny + '): )?' +
-      '(client)=([^,]+), ' +
-      '(sasl_method)=([^,]+), ' +
-      '(sasl_username)=(.*)$'
-      ),
+    '^(?:(' + postfixQidAny + '): )?' +
+    '(client)=([^,]+), ' +
+    '(sasl_method)=([^,]+), ' +
+    '(sasl_username)=(.*)$'
+  ),
   smtp: new RegExp(
-      '^(?:(' + postfixQidAny + '): )?' +
-      '(to)=' + envEmailAddr + ', ' +
-      '(?:(orig_to)=' + envEmailAddr + ', )?' +
-      '(relay)=([^,]+), ' +
-      '(?:(conn_use)=([0-9]+), )?' +
-      '(delay)=([^,]+), ' +
-      '(delays)=([^,]+), ' +
-      '(dsn)=([^,]+), ' +
-      '(status)=(.*)$'
-      ),
+    '^(?:(' + postfixQidAny + '): )?' +
+    '(to)=' + envEmailAddr + ', ' +
+    '(?:(orig_to)=' + envEmailAddr + ', )?' +
+    '(relay)=([^,]+), ' +
+    '(?:(conn_use)=([0-9]+), )?' +
+    '(delay)=([^,]+), ' +
+    '(delays)=([^,]+), ' +
+    '(dsn)=([^,]+), ' +
+    '(status)=(.*)$'
+  ),
   'smtp-defer': new RegExp(
-      '^(?:(' + postfixQidAny + '): )?' +
-      '(?:host) ([^ ]+) ' +
-      '(?:said|refused to talk to me): ' +
-      '(4[0-9]{2} .*)$'
-      // '(?: \\(in reply to (?:end of )?([A-Z ]+) command\\))*'
-      ),
+    '^(?:(' + postfixQidAny + '): )?' +
+    '(?:host) ([^ ]+) ' +
+    '(?:said|refused to talk to me): ' +
+    '(4[0-9]{2} .*)$'
+    // '(?: \\(in reply to (?:end of )?([A-Z ]+) command\\))*'
+  ),
   'smtp-timeout': new RegExp(
-      '^(?:(' + postfixQidAny + '): )?' +
-      'conversation with ([^ ]+) ' +
-      'timed out ' + '(.*)$'
-      ),
+    '^(?:(' + postfixQidAny + '): )?' +
+    'conversation with ([^ ]+) ' +
+    'timed out ' + '(.*)$'
+  ),
   'smtp-reject': new RegExp(
-      '^(?:(' + postfixQidAny + '): )?' +
-      'host ([^ ]+) ' +
-      '(?:said|refused to talk to me): (5[0-9]{2}.*)$'
-      ),
+    '^(?:(' + postfixQidAny + '): )?' +
+    'host ([^ ]+) ' +
+    '(?:said|refused to talk to me): (5[0-9]{2}.*)$'
+  ),
   'smtp-conn-err': /^connect to ([^ ]+): (.*)$/,
   'smtp-debug': new RegExp(
-      '(?:(' + postfixQidAny + '): )?' +
-      '(enabling PIX workarounds|' +
-        'Cannot start TLS: handshake failure|' +
-        'lost connection with .*|' +
-        '^SSL_connect error to .*|' +
-        '^warning: .*|' +
-        'conversation with |' +
-        'host )'
-      ),
+    '(?:(' + postfixQidAny + '): )?' +
+    '(enabling PIX workarounds|' +
+    'Cannot start TLS: handshake failure|' +
+    'lost connection with .*|' +
+    '^SSL_connect error to .*|' +
+    '^warning: .*|' +
+    'conversation with |' +
+    'host )'
+  ),
   qmgr: new RegExp(
-      '^(?:(' + postfixQidAny + '): )?' +
-      '(from)=' + envEmailAddr + ', ' +
-      '(?:' +
-        '(size)=([0-9]+), ' +
-        '(nrcpt)=([0-9]+) ' +
-        '|' +
-        '(status)=(.*)$' +
-        ')'
-       ),
+    '^(?:(' + postfixQidAny + '): )?' +
+    '(from)=' + envEmailAddr + ', ' +
+    '(?:' +
+    '(size)=([0-9]+), ' +
+    '(nrcpt)=([0-9]+) ' +
+    '|' +
+    '(status)=(.*)$' +
+    ')'
+  ),
   'qmgr-retry': new RegExp('^(' + postfixQidAny + '): (removed)'),
   // postfix sometimes truncates the message-id, so don't require ending >
   cleanup: new RegExp(
-      '^(?:(' + postfixQidAny + '): )?' +
-      '((?:resent-)?message-id)=<(.*?)>?$'
-      ),
+    '^(?:(' + postfixQidAny + '): )?' +
+    '((?:resent-)?message-id)=<(.*?)>?$'
+  ),
   pickup: new RegExp(
-      '^(?:(' + postfixQidAny + '): )?' +
-      '(uid)=([0-9]+) ' +
-      '(from)=' + envEmailAddr
-      ),
+    '^(?:(' + postfixQidAny + '): )?' +
+    '(uid)=([0-9]+) ' +
+    '(from)=' + envEmailAddr
+  ),
   'pickup-retry': new RegExp(
-       '^warning: ' +
-       '(' + postfixQidAny + '): ' +
-     '(.*)$'
-     ),
+    '^warning: ' +
+    '(' + postfixQidAny + '): ' +
+   '(.*)$'
+  ),
   error: new RegExp(
-       '^(?:(' + postfixQidAny + '): )?' +
-       '(to)=' + envEmailAddr + ', ' +
-       '(?:(orig_to)=' + envEmailAddr + ', )?' +
-       '(relay)=([^,]+), ' +
-       '(delay)=([^,]+), ' +
-       '(delays)=([^,]+), ' +
-       '(dsn)=([^,]+), ' +
-       '(status)=(.*)$'
-       ),
+    '^(?:(' + postfixQidAny + '): )?' +
+    '(to)=' + envEmailAddr + ', ' +
+    '(?:(orig_to)=' + envEmailAddr + ', )?' +
+    '(relay)=([^,]+), ' +
+    '(delay)=([^,]+), ' +
+    '(delays)=([^,]+), ' +
+    '(dsn)=([^,]+), ' +
+    '(status)=(.*)$'
+  ),
   'error-retry': new RegExp(
-       '^warning: ' +
-       '(' + postfixQidAny + '): ' +
-     '(.*)$'
-     ),
+    '^warning: ' +
+    '(' + postfixQidAny + '): ' +
+    '(.*)$'
+  ),
   bounce: new RegExp(
-       '^(?:(' + postfixQidAny + '): )?' +
-       'sender non-delivery notification: ' +
-       '(' + postfixQidAny + '$)'
-     ),
+    '^(?:(' + postfixQidAny + '): )?' +
+    'sender non-delivery notification: ' +
+    '(' + postfixQidAny + '$)'
+  ),
   'bounce-fatal': new RegExp(
-       '^fatal: ' +
-       '(.*?) ' +
-       '(' + postfixQidAny + '): ' +
-     '(.*)$'
-     ),
+    '^fatal: ' +
+    '(.*?) ' +
+    '(' + postfixQidAny + '): ' +
+    '(.*)$'
+  ),
   local: new RegExp(
-       '^(?:(' + postfixQidAny + '): )?' +
-       '(to)=' + envEmailAddr + ', ' +
-       '(?:(orig_to)=' + envEmailAddr + ', )?' +
-       '(relay)=([^,]+), ' +
-       '(delay)=([^,]+), ' +
-       '(delays)=([^,]+), ' +
-       '(dsn)=([^,]+), ' +
-       '(status)=(sent .*)$'
-       ),
+    '^(?:(' + postfixQidAny + '): )?' +
+    '(to)=' + envEmailAddr + ', ' +
+    '(?:(orig_to)=' + envEmailAddr + ', )?' +
+    '(relay)=([^,]+), ' +
+    '(delay)=([^,]+), ' +
+    '(delays)=([^,]+), ' +
+    '(dsn)=([^,]+), ' +
+    '(status)=(sent .*)$'
+  ),
   forwardedAs: new RegExp('forwarded as (' + postfixQidAny + ')\\)'),
   scache:      new RegExp('^statistics: (.*)'),
   postscreen:  new RegExp('^(.*)'),
