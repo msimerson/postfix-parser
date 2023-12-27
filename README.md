@@ -227,8 +227,8 @@ See [log-ship-elastic-postfix](https://github.com/msimerson/log-ship-elastic-pos
 
 <sub>Copyright 2015 by eFolder, Inc.</sub>
 
-[ci-img]: https://travis-ci.org/msimerson/postfix-parser.svg
-[ci-url]: https://travis-ci.org/msimerson/postfix-parser
+[ci-img]: https://github.com/msimerson/postfix-parser/actions/workflows/ci.yml/badge.svg
+[ci-url]: https://github.com/msimerson/postfix-parser/actions/workflows/ci.yml
 [cov-img]: https://codecov.io/github/msimerson/postfix-parser/coverage.svg?branch=master
 [cov-url]: https://codecov.io/github/msimerson/postfix-parser?branch=master
 [clim-img]: https://codeclimate.com/github/msimerson/postfix-parser/badges/gpa.svg
