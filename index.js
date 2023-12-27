@@ -1,13 +1,13 @@
 
-var logger = require('./lib/logger');
+const logger = require('./lib/logger')
 
-var envEmailAddr   = '<?([^>,]*)>?';
-var postfixQid     = '[0-9A-F]{10,11}';     // default queue ids
-var postfixQidLong = '[0-9A-Za-z]{14,16}';  // optional 'long' ids
-var postfixQidAny  = postfixQidLong + '|' + postfixQid;
+const envEmailAddr   = '<?([^>,]*)>?'
+const postfixQid     = '[0-9A-F]{10,11}'     // default queue ids
+const postfixQidLong = '[0-9A-Za-z]{14,16}'  // optional 'long' ids
+const postfixQidAny  = postfixQidLong + '|' + postfixQid
 
-var regex = {
-  syslog: /^([A-Za-z]{3} [0-9 ]{2} [\d:]{8}) ([^\s]+) ([^[]+)\[([\d]+)\]: (.*)$/,
+const regex = {
+  syslog            : /^([A-Za-z]{3} [0-9 ]{2} [\d:]{8}) ([^\s]+) ([^[]+)\[([\d]+)\]: (.*)$/,
   'submission/smtpd': new RegExp(
     '^(?:(' + postfixQidAny + '): )?' +
     '(client)=([^,]+), ' +
@@ -43,7 +43,7 @@ var regex = {
     '(?:said|refused to talk to me): (5[0-9]{2}.*)$'
   ),
   'smtp-conn-err': /^connect to ([^ ]+): (.*)$/,
-  'smtp-debug': new RegExp(
+  'smtp-debug'   : new RegExp(
     '(?:(' + postfixQidAny + '): )?' +
     '(enabling PIX workarounds|' +
     'Cannot start TLS: handshake failure|' +
@@ -65,7 +65,7 @@ var regex = {
   ),
   'qmgr-retry': new RegExp('^(' + postfixQidAny + '): (removed)'),
   // postfix sometimes truncates the message-id, so don't require ending >
-  cleanup: new RegExp(
+  cleanup     : new RegExp(
     '^(?:(' + postfixQidAny + '): )?' +
     '((?:resent-)?message-id)=<(.*?)>?$'
   ),
@@ -116,188 +116,188 @@ var regex = {
     '(status)=(sent .*)$'
   ),
   forwardedAs: new RegExp('forwarded as (' + postfixQidAny + ')\\)'),
-  scache:      new RegExp('^statistics: (.*)'),
-  postscreen:  new RegExp('^(.*)'),
-  postsuper:   new RegExp('^(' + postfixQidAny + '): (.*)$'),
-};
+  scache     :      new RegExp('^statistics: (.*)'),
+  postscreen :  new RegExp('^(.*)'),
+  postsuper  :   new RegExp('^(' + postfixQidAny + '): (.*)$'),
+}
 
 exports.asObject = function (line) {
 
-  var match = line.match(regex.syslog);
+  const match = line.match(regex.syslog)
   if (!match) {
-    logger.error('unparsable syslog: ' + line);
-    return;
+    logger.error('unparsable syslog: ' + line)
+    return
   }
 
-  var syslog = syslogAsObject(match);
-  if (!/^postfix/.test(syslog.prog)) return; // not postfix, ignore
+  const syslog = syslogAsObject(match)
+  if (!/^postfix/.test(syslog.prog)) return // not postfix, ignore
 
-  var parsed = exports.asObjectType(syslog.prog, syslog.msg);
+  const parsed = exports.asObjectType(syslog.prog, syslog.msg)
   if (!parsed) {
-    logger.error('unparsable ' + syslog.prog + ': ' + syslog.msg);
-    return;
+    logger.error('unparsable ' + syslog.prog + ': ' + syslog.msg)
+    return
   }
 
-  ['date','host','prog','pid'].forEach(function (f) {
-    if (!syslog[f]) return;
-    parsed[f] = syslog[f];
-  });
+  [ 'date','host','prog','pid' ].forEach(function (f) {
+    if (!syslog[f]) return
+    parsed[f] = syslog[f]
+  })
 
-  return parsed;
-};
+  return parsed
+}
 
 exports.asObjectType = function (type, line) {
   if (!type || !line) {
-    logger.error('missing required arg');
-    return;
+    logger.error('missing required arg')
+    return
   }
-  if ('postfix/' === type.substr(0,8)) type = type.substr(8);
+  if ('postfix/' === type.substr(0,8)) type = type.substr(8)
 
   switch (type) {
     case 'qmgr':
     case 'pickup':
     case 'error':
     case 'submission/smtpd':
-      return argAsObject(type, line);
+      return argAsObject(type, line)
     case 'smtp':
-      return smtpAsObject(line);
+      return smtpAsObject(line)
     case 'bounce':
-      return bounceAsObject(line);
+      return bounceAsObject(line)
   }
 
-  var match = line.match(regex[type]);
-  if (!match) return;
+  const match = line.match(regex[type])
+  if (!match) return
 
   switch (type) {
     case 'syslog':
-      return syslogAsObject(match);
+      return syslogAsObject(match)
     case 'scache':
-      return { statistics: match[1] };
+      return { statistics: match[1] }
     case 'postscreen':
-      return { postscreen: match[1] };
+      return { postscreen: match[1] }
     case 'local':
-      return localAsObject(match);
+      return localAsObject(match)
     case 'postsuper':
-      return { qid: match[1], msg: match[2] };
+      return { qid: match[1], msg: match[2] }
   }
 
-  return matchAsObject(match);
-};
+  return matchAsObject(match)
+}
 
 function syslogAsObject (match) {
   return {
     date: match[1],
     host: match[2],
     prog: match[3],
-    pid:  match[4],
-    msg:  match[5],
-  };
+    pid :  match[4],
+    msg :  match[5],
+  }
 }
 
 function matchAsObject (match) {
-  match.shift();
-  var obj = {};
-  var qid = match.shift();
-  if (qid) obj.qid = qid;
+  match.shift()
+  const obj = {}
+  const qid = match.shift()
+  if (qid) obj.qid = qid
   while (match.length) {
-    var key = match.shift();
-    var val = match.shift();
-    if (key === undefined) continue;
-    if (val === undefined) continue;
-    obj[key] = val;
+    const key = match.shift()
+    const val = match.shift()
+    if (key === undefined) continue
+    if (val === undefined) continue
+    obj[key] = val
   }
-  return obj;
+  return obj
 }
 
 function argAsObject (thing, line) {
-  var match = line.match(regex[thing]);
-  if (match) return matchAsObject(match);
+  let match = line.match(regex[thing])
+  if (match) return matchAsObject(match)
 
-  match = line.match(regex[thing + '-retry']);
-  if (match) return { qid: match[1], msg: match[2] };
+  match = line.match(regex[thing + '-retry'])
+  if (match) return { qid: match[1], msg: match[2] }
 }
 
 function smtpAsObject (line) {
-  var match = line.match(regex.smtp);
-  if (match) return matchAsObject(match);
+  let match = line.match(regex.smtp)
+  if (match) return matchAsObject(match)
 
-  match = line.match(regex['smtp-conn-err']);
+  match = line.match(regex['smtp-conn-err'])
   if (match) {
     return {
       action: 'delivery',
-      mx: match[1],
-      err: match[2]
-    };
+      mx    : match[1],
+      err   : match[2],
+    }
   }
 
-  match = line.match(regex['smtp-defer']);
+  match = line.match(regex['smtp-defer'])
   if (match) {
     return {
       action: 'defer',
-      qid: match[1],
-      host: match[2],
-      msg: match[3]
-    };
+      qid   : match[1],
+      host  : match[2],
+      msg   : match[3],
+    }
   }
 
-  match = line.match(regex['smtp-reject']);
+  match = line.match(regex['smtp-reject'])
   if (match) {
     return {
       action: 'reject',
-      qid: match[1],
-      host: match[2],
-      msg: match[3],
-    };
+      qid   : match[1],
+      host  : match[2],
+      msg   : match[3],
+    }
   }
 
-  match = line.match(regex['smtp-timeout']);
+  match = line.match(regex['smtp-timeout'])
   if (match) {
     return {
       action: 'defer',
-      qid: match[1],
-      host: match[2],
-      msg: match[3],
-    };
+      qid   : match[1],
+      host  : match[2],
+      msg   : match[3],
+    }
   }
 
-  match = line.match(regex['smtp-debug']);
-  if (!match) return;
+  match = line.match(regex['smtp-debug'])
+  if (!match) return
   if (match[1] && match[2]) {
     return {
       qid: match[1],
       msg: match[2],
-    };
+    }
   }
-  return { msg: match[0] };
+  return { msg: match[0] }
 }
 
 function bounceAsObject (line) {
 
-  var match = line.match(regex.bounce);
+  let match = line.match(regex.bounce)
   if (match) {
-    match.shift();
-    var obj = {};
-    var qid = match.shift();
-    if (qid) obj.qid = qid;
-    obj.dsnQid = match.shift();
-    return obj;
+    match.shift()
+    const obj = {}
+    const qid = match.shift()
+    if (qid) obj.qid = qid
+    obj.dsnQid = match.shift()
+    return obj
   }
 
-  match = line.match(regex['bounce-fatal']);
+  match = line.match(regex['bounce-fatal'])
   if (match) {
     return {
       qid: match[2],
-      msg: 'fatal: ' + match[1] + ': ' + match[3]
-    };
+      msg: 'fatal: ' + match[1] + ': ' + match[3],
+    }
   }
 }
 
-function localAsObject(match) {
-  var obj = matchAsObject(match);
-  var m = obj.status.match(regex.forwardedAs);
+function localAsObject (match) {
+  const obj = matchAsObject(match)
+  const m = obj.status.match(regex.forwardedAs)
   if (m) {
-    obj.status = 'forwarded';
-    obj.forwardedAs = m[1];
+    obj.status = 'forwarded'
+    obj.forwardedAs = m[1]
   }
-  return obj;
+  return obj
 }

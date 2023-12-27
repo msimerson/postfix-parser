@@ -8,7 +8,7 @@
     "maillog",
     "mail.log"
   ],
-  "version": "1.0.6",
+  "version": "1.1.0",
   "private": false,
   "homepage": "https://github.com/msimerson/postfix-parser",
   "author": {
@@ -20,10 +20,11 @@
   },
   "main": "index.js",
   "engines": {
-    "node": ">=4"
+    "node": ">=8"
   },
   "dependencies": {},
   "devDependencies": {
+    "eslint": "*",
     "mocha": "*"
   },
   "bugs": {
@@ -31,7 +32,8 @@
   },
   "license": "BSD-2-Clause",
   "scripts": {
-    "lint": "./node_modules/.bin/eslint index.js lib/*.js test/*.js",
-    "test": "NODE_ENV=test ./node_modules/.bin/mocha"
+    "lint": "npx eslint index.js lib/*.js test/*.js",
+    "lintfix": "npx eslint --fix index.js lib/*.js test/*.js",
+    "test": "npx mocha"
   }
 }

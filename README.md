@@ -43,20 +43,14 @@ requires two positional arguments:
 
 ### Typical Usage
 
-````js
-var parsed = parser.asObject('syslog', data);
-if (!parsed) {
-    // unparseable syslog line
-    return;
-}
+```js
+const parsed = parser.asObject('syslog', data);
+if (!parsed) return; // unparseable syslog line
 
-if (!/^postfix/.test(parsed.prog)) {
-    // not a postfix line
-    return;
-}
+if (!/^postfix/.test(parsed.prog)) return;  // not a postfix line
 
-var msg = parser.asObject(parsed.prog, parsed.msg);
-````
+const msg = parser.asObject(parsed.prog, parsed.msg);
+```
 
 `msg` is an object of `parsed.prog` type (see examples below)
 
@@ -65,12 +59,12 @@ var msg = parser.asObject(parsed.prog, parsed.msg);
 
 ### syslog
 
-````js
+```js
 asObject(
     'syslog',
     'Jul  5 06:52:11 prd-mx1 postfix/qmgr[20459]: 3mPVKl0Mhjz7sXv: from=<>, size=2666, nrcpt=2 (queue active)'
 );
-````
+```
 
 Returns:
 
@@ -233,8 +227,8 @@ See [log-ship-elastic-postfix](https://github.com/msimerson/log-ship-elastic-pos
 
 <sub>Copyright 2015 by eFolder, Inc.</sub>
 
-[ci-img]: https://travis-ci.org/msimerson/postfix-parser.svg
-[ci-url]: https://travis-ci.org/msimerson/postfix-parser
+[ci-img]: https://github.com/msimerson/postfix-parser/actions/workflows/ci.yml/badge.svg
+[ci-url]: https://github.com/msimerson/postfix-parser/actions/workflows/ci.yml
 [cov-img]: https://codecov.io/github/msimerson/postfix-parser/coverage.svg?branch=master
 [cov-url]: https://codecov.io/github/msimerson/postfix-parser?branch=master
 [clim-img]: https://codeclimate.com/github/msimerson/postfix-parser/badges/gpa.svg
