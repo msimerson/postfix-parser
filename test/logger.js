@@ -1,7 +1,7 @@
 
-var assert = require('assert')
+const assert = require('assert')
 
-var logger = require('../lib/logger')
+const logger = require('../lib/logger')
 
 describe('logger', function () {
 

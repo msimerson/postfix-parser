@@ -1,10 +1,10 @@
 
-var assert = require('assert')
-var util   = require('util')
+const assert = require('assert')
+const util   = require('util')
 
-var re     = require('../index')
+const re     = require('../index')
 
-var syslogLines = [
+const syslogLines = [
   {
     name: 'spamd',
     line: 'Jul  5 06:52:01 prd-mx1 spamd[11526]: spamd: identified spam (9.3/5.0) for nagios:1209 in 0.8 seconds, 5 bytes.',
@@ -662,11 +662,11 @@ var postfixLines = [
 
 describe('postfix lines', function () {
   describe('asObjectType', function () {
-    postfixLines.forEach(function (test) {
+    for (const test of postfixLines) {
       it(test.type + (test.desc ? ' ' + test.desc : ''), function () {
-        var res = re.asObjectType(test.type, test.line)
+        const res = re.asObjectType(test.type, test.line)
         assert.deepEqual(res, test.obj) // , util.inspect(res, {depth: null}));
       })
-    })
+    }
   })
 })
