@@ -1,12 +1,12 @@
 
-var logger = require('./lib/logger')
+const logger = require('./lib/logger')
 
-var envEmailAddr   = '<?([^>,]*)>?'
-var postfixQid     = '[0-9A-F]{10,11}'     // default queue ids
-var postfixQidLong = '[0-9A-Za-z]{14,16}'  // optional 'long' ids
-var postfixQidAny  = postfixQidLong + '|' + postfixQid
+const envEmailAddr   = '<?([^>,]*)>?'
+const postfixQid     = '[0-9A-F]{10,11}'     // default queue ids
+const postfixQidLong = '[0-9A-Za-z]{14,16}'  // optional 'long' ids
+const postfixQidAny  = postfixQidLong + '|' + postfixQid
 
-var regex = {
+const regex = {
   syslog            : /^([A-Za-z]{3} [0-9 ]{2} [\d:]{8}) ([^\s]+) ([^[]+)\[([\d]+)\]: (.*)$/,
   'submission/smtpd': new RegExp(
     '^(?:(' + postfixQidAny + '): )?' +
@@ -123,16 +123,16 @@ var regex = {
 
 exports.asObject = function (line) {
 
-  var match = line.match(regex.syslog)
+  const match = line.match(regex.syslog)
   if (!match) {
     logger.error('unparsable syslog: ' + line)
     return
   }
 
-  var syslog = syslogAsObject(match)
+  const syslog = syslogAsObject(match)
   if (!/^postfix/.test(syslog.prog)) return // not postfix, ignore
 
-  var parsed = exports.asObjectType(syslog.prog, syslog.msg)
+  const parsed = exports.asObjectType(syslog.prog, syslog.msg)
   if (!parsed) {
     logger.error('unparsable ' + syslog.prog + ': ' + syslog.msg)
     return
@@ -165,7 +165,7 @@ exports.asObjectType = function (type, line) {
       return bounceAsObject(line)
   }
 
-  var match = line.match(regex[type])
+  const match = line.match(regex[type])
   if (!match) return
 
   switch (type) {
@@ -196,12 +196,12 @@ function syslogAsObject (match) {
 
 function matchAsObject (match) {
   match.shift()
-  var obj = {}
-  var qid = match.shift()
+  const obj = {}
+  const qid = match.shift()
   if (qid) obj.qid = qid
   while (match.length) {
-    var key = match.shift()
-    var val = match.shift()
+    const key = match.shift()
+    const val = match.shift()
     if (key === undefined) continue
     if (val === undefined) continue
     obj[key] = val
@@ -210,7 +210,7 @@ function matchAsObject (match) {
 }
 
 function argAsObject (thing, line) {
-  var match = line.match(regex[thing])
+  let match = line.match(regex[thing])
   if (match) return matchAsObject(match)
 
   match = line.match(regex[thing + '-retry'])
@@ -218,7 +218,7 @@ function argAsObject (thing, line) {
 }
 
 function smtpAsObject (line) {
-  var match = line.match(regex.smtp)
+  let match = line.match(regex.smtp)
   if (match) return matchAsObject(match)
 
   match = line.match(regex['smtp-conn-err'])
@@ -273,11 +273,11 @@ function smtpAsObject (line) {
 
 function bounceAsObject (line) {
 
-  var match = line.match(regex.bounce)
+  let match = line.match(regex.bounce)
   if (match) {
     match.shift()
-    var obj = {}
-    var qid = match.shift()
+    const obj = {}
+    const qid = match.shift()
     if (qid) obj.qid = qid
     obj.dsnQid = match.shift()
     return obj
@@ -293,8 +293,8 @@ function bounceAsObject (line) {
 }
 
 function localAsObject (match) {
-  var obj = matchAsObject(match)
-  var m = obj.status.match(regex.forwardedAs)
+  const obj = matchAsObject(match)
+  const m = obj.status.match(regex.forwardedAs)
   if (m) {
     obj.status = 'forwarded'
     obj.forwardedAs = m[1]
