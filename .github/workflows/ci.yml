@@ -27,7 +27,7 @@ jobs:
         NODE_ENV: cov
 
     - name: codecov
-      uses: codecov/codecov-action@v2
+      uses: codecov/codecov-action@v3
 
     - name: Coveralls
       uses: coverallsapp/github-action@master
