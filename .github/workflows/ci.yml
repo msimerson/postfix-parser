@@ -50,6 +50,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - run: npm test
+      env:
+        NODE_ENV: test
 
   get-lts:
     needs: lint
