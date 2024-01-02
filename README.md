@@ -20,7 +20,7 @@ Call with a syslog line:
 
 Returns an object:
 
-````js
+```js
 {
     date: 'Jul  5 06:52:11',
     host: 'prd-mx1',
@@ -30,7 +30,7 @@ Returns an object:
     size: '2666',
     nrcpt: '2',
 }
-````
+```
 
 ## asObjectType
 
@@ -44,7 +44,7 @@ requires two positional arguments:
 ### Typical Usage
 
 ```js
-const parsed = parser.asObject('syslog', data);
+const parsed = parser.asObjectType('syslog', data);
 if (!parsed) return; // unparseable syslog line
 
 if (!/^postfix/.test(parsed.prog)) return;  // not a postfix line

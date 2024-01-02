@@ -1,6 +1,13 @@
 
 ### Unreleased
 
+
+### [1.1.1] - 2024-01-01
+
+- doc(README): fix syntax example
+- ci(publish.yml): correct name of main branch
+
+
 ### 1.1.0 - 2023-12-27
 
 - doc(README): update CI / badge URLs
@@ -43,3 +50,4 @@
 
 
 [1.1.0]: https://github.com/msimerson/postfix-parser/releases/tag/1.1.0
+[1.1.1]: https://github.com/msimerson/postfix-parser/releases/tag/1.1.1
