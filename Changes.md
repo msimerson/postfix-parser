@@ -1,6 +1,23 @@
 
 ### Unreleased
 
+
+### [1.1.1] - 2024-01-01
+
+#### Added
+
+- 
+
+#### Fixed
+
+- 
+
+#### Changed
+
+- 
+- Merge pull request #21 from msimerson/msimerson-patch-1
+- Update publish.yml
+
 ### 1.1.0 - 2023-12-27
 
 - doc(README): update CI / badge URLs
@@ -43,3 +60,4 @@
 
 
 [1.1.0]: https://github.com/msimerson/postfix-parser/releases/tag/1.1.0
+[1.1.1]: https://github.com/msimerson/postfix-parser/releases/tag/1.1.1
