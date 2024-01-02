@@ -4,19 +4,9 @@
 
 ### [1.1.1] - 2024-01-01
 
-#### Added
+- doc(README): fix syntax example
+- ci(publish.yml): correct name of main branch
 
-- 
-
-#### Fixed
-
-- 
-
-#### Changed
-
-- 
-- Merge pull request #21 from msimerson/msimerson-patch-1
-- Update publish.yml
 
 ### 1.1.0 - 2023-12-27
 
