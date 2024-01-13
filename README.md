@@ -32,6 +32,8 @@ Returns an object:
 }
 ```
 
+----
+
 ## asObjectType
 
 requires two positional arguments:
@@ -54,6 +56,7 @@ const msg = parser.asObject(parsed.prog, parsed.msg);
 
 `msg` is an object of `parsed.prog` type (see examples below)
 
+----
 
 ## Parser Types
 
@@ -80,6 +83,8 @@ Returns:
 
 This is comparable to what you'd already have in Elasticsearch if you had imported your logs using Logstash.
 
+----
+
 ### qmgr
 
 ```js
@@ -96,6 +101,8 @@ Returns:
     nrcpt: '2',
 }
 ```
+
+----
 
 ### smtp
 
@@ -117,6 +124,7 @@ Returns:
     status: 'sent (250 2.0.0 t5UI2nBt018923-t5UI2nBw018923 Message accepted for delivery)',
 }
 ```
+----
 
 ### cleanup
 
@@ -132,6 +140,8 @@ Returns:
     'message-id': '3mKxs308vpz7sXd@mx14.example.net',
 }
 ```
+
+----
 
 ### error
 
@@ -153,6 +163,8 @@ Returns:
 }
 ```
 
+----
+
 ### bounce
 
 ```js
@@ -168,6 +180,8 @@ Returns:
 }
 ```
 
+----
+
 ### scache
 
 ```js
@@ -181,6 +195,8 @@ Returns:
     statistics: 'domain lookup hits=0 miss=3 success=0%',
 }
 ```
+
+----
 
 ### pickup
 
@@ -197,6 +213,8 @@ Returns:
     from: 'system',
 }
 ```
+
+----
 
 ### local
 
