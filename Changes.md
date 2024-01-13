@@ -2,6 +2,12 @@
 ### Unreleased
 
 
+### [1.1.2] - 2024-01-12
+
+- feat(syslog): permit single digit day
+- feat(syslog): add a few more debug patterns
+
+
 ### [1.1.1] - 2024-01-01
 
 - doc(README): fix syntax example
@@ -51,3 +57,4 @@
 
 [1.1.0]: https://github.com/msimerson/postfix-parser/releases/tag/1.1.0
 [1.1.1]: https://github.com/msimerson/postfix-parser/releases/tag/1.1.1
+[1.1.2]: https://github.com/msimerson/postfix-parser/releases/tag/1.1.2

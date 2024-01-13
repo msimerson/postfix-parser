@@ -126,14 +126,14 @@ describe('syslog lines', function () {
   context('asObject', function () {
     syslogLines.forEach(function (test) {
       it(test.name, function () {
-        var res = re.asObject(test.line)
+        const res = re.asObject(test.line)
         assert.deepEqual(res, test.obj, util.inspect(res, { depth: null }))
       })
     })
   })
 })
 
-var postfixLines = [
+const postfixLines = [
   {
     line: '3mPVKl0Mhjz7sXv: to=<susan.bck@example.org>, relay=mpafm.example.org[24.100.200.21]:25, conn_use=2, delay=1.2, delays=0.76/0.01/0.09/0.34, dsn=2.0.0, status=sent (250 2.0.0 t5UI2nBt018923-t5UI2nBw018923 Message accepted for delivery)',
     type: 'postfix/smtp',
@@ -656,6 +656,42 @@ var postfixLines = [
     obj : {
       qid: '3nsF2M5j0nz31GS',
       msg: 'released from hold',
+    },
+  },
+  {
+    line: "Jan 6 08:39:06 mail postfix/smtpd[339505]: 93C8388C38: client=unknown[192.168.1.0]",
+    type: 'syslog',
+    desc: 'postfix/smtpd',
+    obj: {
+      "date": "Jan 6 08:39:06",
+      "host": "mail",
+      "msg": "93C8388C38: client=unknown[192.168.1.0]",
+      "pid": "339505",
+      "prog": "postfix/smtpd",
+    },
+  },
+  {
+    line: "Jan 6 08:39:06 mail postfix/smtpd[339505]: disconnect from unknown[192.168.1.0] ehlo=1 mail=1 rcpt=1 data=1 quit=1",
+    type: 'syslog',
+    desc: 'postfix/smtpd disconnect',
+    obj: {
+      "date": "Jan 6 08:39:06",
+      "host": "mail",
+      "msg": "disconnect from unknown[192.168.1.0] ehlo=1 mail=1 rcpt=1 data=1 quit=1",
+      "pid": "339505",
+      "prog": "postfix/smtpd",
+    },
+  },
+  {
+    line: "Jan 6 08:39:49 mail postfix/smtpd[339505]: connect from localhost[127.0.0.1]",
+    type: 'syslog',
+    desc: 'postfix/smtpd connect',
+    obj: {
+      "date": "Jan 6 08:39:49",
+      "host": "mail",
+      "msg": "connect from localhost[127.0.0.1]",
+      "pid": "339505",
+      "prog": "postfix/smtpd",
     },
   },
 ]
