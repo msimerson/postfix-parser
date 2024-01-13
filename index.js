@@ -7,7 +7,7 @@ const postfixQidLong = '[0-9A-Za-z]{14,16}'  // optional 'long' ids
 const postfixQidAny  = postfixQidLong + '|' + postfixQid
 
 const regex = {
-  syslog            : /^([A-Za-z]{3} [0-9 ]{2} [\d:]{8}) ([^\s]+) ([^[]+)\[([\d]+)\]: (.*)$/,
+  syslog            : /^([A-Za-z]{3} [0-9 ]{1,2} [\d:]{8}) ([^\s]+) ([^[]+)\[([\d]+)\]: (.*)$/,
   'submission/smtpd': new RegExp(
     '^(?:(' + postfixQidAny + '): )?' +
     '(client)=([^,]+), ' +
@@ -46,8 +46,12 @@ const regex = {
   'smtp-debug'   : new RegExp(
     '(?:(' + postfixQidAny + '): )?' +
     '(enabling PIX workarounds|' +
+    'setting up TLS|' +
     'Cannot start TLS: handshake failure|' +
-    'lost connection with .*|' +
+    'lost connection .*|' +
+    '^connect from .*|' +
+    '^disconnect from .*|' +
+    '^SSL_accept|' +
     '^SSL_connect error to .*|' +
     '^warning: .*|' +
     'conversation with |' +
@@ -189,8 +193,8 @@ function syslogAsObject (match) {
     date: match[1],
     host: match[2],
     prog: match[3],
-    pid :  match[4],
-    msg :  match[5],
+    pid : match[4],
+    msg : match[5],
   }
 }
 
