@@ -12,12 +12,11 @@ env:
   CI: true
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@v3
-      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v6
       - run: npm install
       - run: npm test
 
@@ -25,29 +24,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@v3
-        name: Node ${{ env.node-version }}
+      - uses: actions/setup-node@v6
         with:
-          registry-url: https://registry.npmjs.org/
-      - uses: actions/checkout@v3
-
+          node-version: 24
+      - uses: actions/checkout@v6
       - name: publish to NPM
-        run: npm publish --access=public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-
-  # publish-gpr:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     contents: read
-  #     packages: write
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-node@v3
-  #       with:
-  #         registry-url: https://npm.pkg.github.com/
-  #         scope: "@nictool"
-  #     - run: npm publish
-  #       env:
-  #         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm publish --access public --provenance

@@ -10,48 +10,41 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/setup-node@v3
-    - uses: actions/checkout@v3
-    - run: npm install
-    - run: npm run lint
+      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v6
+      - run: npm install
+      - run: npm run lint
 
   coverage:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/setup-node@v3
-    - uses: actions/checkout@v3
-    - run: npm install
-    - name: run coverage
-      run: npx -y c8 --reporter=lcov npm test
-      env:
-        NODE_ENV: cov
-
-    - name: codecov
-      uses: codecov/codecov-action@v3
-
-    - name: Coveralls
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.github_token }}
+      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v6
+      - run: npm install
+      - run: npm run test:coverage:lcov
+      - name: codecov
+        uses: codecov/codecov-action@v3
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   test:
     needs: get-lts
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
-        node-version: ${{ fromJson(needs.get-lts.outputs.active) }}
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: ${{ fromJson(needs.get-lts.outputs.lts) }}
       fail-fast: false
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      name: Node ${{ matrix.node-version }} on ${{ matrix.os }}
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
-    - run: npm test
-      env:
-        NODE_ENV: test
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        name: Node ${{ matrix.node-version }} on ${{ matrix.os }}
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm run test
 
   get-lts:
     needs: lint

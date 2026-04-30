@@ -32,7 +32,7 @@ Returns an object:
 }
 ```
 
-----
+---
 
 ## asObjectType
 
@@ -46,17 +46,17 @@ requires two positional arguments:
 ### Typical Usage
 
 ```js
-const parsed = parser.asObjectType('syslog', data);
-if (!parsed) return; // unparseable syslog line
+const parsed = parser.asObjectType('syslog', data)
+if (!parsed) return // unparseable syslog line
 
-if (!/^postfix/.test(parsed.prog)) return;  // not a postfix line
+if (!/^postfix/.test(parsed.prog)) return // not a postfix line
 
-const msg = parser.asObject(parsed.prog, parsed.msg);
+const msg = parser.asObject(parsed.prog, parsed.msg)
 ```
 
 `msg` is an object of `parsed.prog` type (see examples below)
 
-----
+---
 
 ## Parser Types
 
@@ -64,9 +64,9 @@ const msg = parser.asObject(parsed.prog, parsed.msg);
 
 ```js
 asObject(
-    'syslog',
-    'Jul  5 06:52:11 prd-mx1 postfix/qmgr[20459]: 3mPVKl0Mhjz7sXv: from=<>, size=2666, nrcpt=2 (queue active)'
-);
+  'syslog',
+  'Jul  5 06:52:11 prd-mx1 postfix/qmgr[20459]: 3mPVKl0Mhjz7sXv: from=<>, size=2666, nrcpt=2 (queue active)',
+)
 ```
 
 Returns:
@@ -83,12 +83,12 @@ Returns:
 
 This is comparable to what you'd already have in Elasticsearch if you had imported your logs using Logstash.
 
-----
+---
 
 ### qmgr
 
 ```js
-asObject('3mPVKl0Mhjz7sXv: from=<>, size=2666, nrcpt=2 (queue active)');
+asObject('3mPVKl0Mhjz7sXv: from=<>, size=2666, nrcpt=2 (queue active)')
 ```
 
 Returns:
@@ -102,12 +102,14 @@ Returns:
 }
 ```
 
-----
+---
 
 ### smtp
 
 ```js
-asObject('3mPVKl0Mhjz7sXv: to=<sam.bck@example.org>, relay=mafm.example.org[24.100.200.21]:25, conn_use=2, delay=1.2, delays=0.76/0.01/0.09/0.34, dsn=2.0.0, status=sent (250 2.0.0 t5UI2nBt018923-t5UI2nBw018923 Message accepted for delivery)');
+asObject(
+  '3mPVKl0Mhjz7sXv: to=<sam.bck@example.org>, relay=mafm.example.org[24.100.200.21]:25, conn_use=2, delay=1.2, delays=0.76/0.01/0.09/0.34, dsn=2.0.0, status=sent (250 2.0.0 t5UI2nBt018923-t5UI2nBw018923 Message accepted for delivery)',
+)
 ```
 
 Returns:
@@ -124,12 +126,13 @@ Returns:
     status: 'sent (250 2.0.0 t5UI2nBt018923-t5UI2nBw018923 Message accepted for delivery)',
 }
 ```
-----
+
+---
 
 ### cleanup
 
 ```js
-asObject('3mKxs35RQsz7sXF: message-id=<3mKxs308vpz7sXd@mx14.example.net>');
+asObject('3mKxs35RQsz7sXF: message-id=<3mKxs308vpz7sXd@mx14.example.net>')
 ```
 
 Returns:
@@ -141,12 +144,14 @@ Returns:
 }
 ```
 
-----
+---
 
 ### error
 
 ```js
-asObject('3mJddz5fh3z7sdM: to=<rcarey@example.tv>, relay=none, delay=165276, delays=165276/0.09/0/0.09, dsn=4.4.1, status=deferred (delivery temporarily suspended: connect to 24.200.177.247[24.200.177.247]:25: Connection timed out)')
+asObject(
+  '3mJddz5fh3z7sdM: to=<rcarey@example.tv>, relay=none, delay=165276, delays=165276/0.09/0/0.09, dsn=4.4.1, status=deferred (delivery temporarily suspended: connect to 24.200.177.247[24.200.177.247]:25: Connection timed out)',
+)
 ```
 
 Returns:
@@ -163,7 +168,7 @@ Returns:
 }
 ```
 
-----
+---
 
 ### bounce
 
@@ -180,7 +185,7 @@ Returns:
 }
 ```
 
-----
+---
 
 ### scache
 
@@ -196,7 +201,7 @@ Returns:
 }
 ```
 
-----
+---
 
 ### pickup
 
@@ -214,12 +219,14 @@ Returns:
 }
 ```
 
-----
+---
 
 ### local
 
 ```js
-asObject('3mLQKH6hqhz7sWK: to=<logspam@system.alerts>, relay=local, delay=3.1, delays=1.8/0.86/0/0.44, dsn=2.0.0, status=sent (forwarded as 3mLQKK4rDdz7sVS)')
+asObject(
+  '3mLQKH6hqhz7sWK: to=<logspam@system.alerts>, relay=local, delay=3.1, delays=1.8/0.86/0/0.44, dsn=2.0.0, status=sent (forwarded as 3mLQKK4rDdz7sVS)',
+)
 ```
 
 Returns:
@@ -237,11 +244,9 @@ Returns:
 }
 ```
 
-
 ## See also
 
 See [log-ship-elastic-postfix](https://github.com/msimerson/log-ship-elastic-postfix) for an example of combining all log entries for a single message into a normalized document.
-
 
 <sub>Copyright 2015 by eFolder, Inc.</sub>
 
