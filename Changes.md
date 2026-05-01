@@ -4,8 +4,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ### Unreleased
 
+### [1.3.0] - 2026-04-30
+
+
 ### [1.2.0] - 2026-04-30
 
+- es6 updates
+- prettier
+- doc(CONTRIBUTORS): added
 - populate files in package.json
 - test: runner is now node:test
 - eslint: upgraded to v10
@@ -59,3 +65,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 [1.1.1]: https://github.com/msimerson/postfix-parser/releases/tag/v1.1.1
 [1.1.2]: https://github.com/msimerson/postfix-parser/releases/tag/v1.1.2
 [1.2.0]: https://github.com/msimerson/postfix-parser/releases/tag/v1.2.0
+[1.3.0]: https://github.com/msimerson/postfix-parser/releases/tag/v1.3.0
