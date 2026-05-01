@@ -2,18 +2,12 @@ name: publish
 
 on:
   workflow_call:
-  push:
-    branches:
-      - master
-    paths:
-      - package.json
-
-env:
-  CI: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/setup-node@v6
       - uses: actions/checkout@v6
@@ -23,9 +17,13 @@ jobs:
   publish-npm:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/setup-node@v6
         with:
+          registry-url: https://registry.npmjs.org/
           node-version: 24
       - uses: actions/checkout@v6
       - name: publish to NPM

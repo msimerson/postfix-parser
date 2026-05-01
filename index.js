@@ -1,4 +1,4 @@
-const logger = require('./lib/logger')
+import * as logger from './lib/logger.js'
 
 const envEmailAddr = '<?([^>,]*)>?'
 const postfixQid = '[0-9A-F]{10,11}' // default queue ids
@@ -66,7 +66,7 @@ const regex = {
   postsuper  : new RegExp(`^(${postfixQidAny}): (.*)$`),
 }
 
-exports.asObject = line => {
+export const asObject = line => {
   const match = line.match(regex.syslog)
   if (!match) {
     logger.error(`unparsable syslog: ${line}`)
@@ -76,56 +76,52 @@ exports.asObject = line => {
   const syslog = syslogAsObject(match)
   if (!/^postfix/.test(syslog.prog)) return // not postfix, ignore
 
-  const parsed = exports.asObjectType(syslog.prog, syslog.msg)
+  const parsed = asObjectType(syslog.prog, syslog.msg)
   if (!parsed) {
     logger.error(`unparsable ${syslog.prog}: ${syslog.msg}`)
     return
   }
 
-  ;[ 'date', 'host', 'prog', 'pid' ].forEach(field => {
-    if (!syslog[field]) return
-    parsed[field] = syslog[field]
-  })
+  const fields = [ 'date', 'host', 'prog', 'pid' ]
+  fields
+    .filter(field => syslog[field])
+    .forEach(field => {
+      parsed[field] = syslog[field]
+    })
 
   return parsed
 }
 
-exports.asObjectType = (type, line) => {
+export const asObjectType = (type, line) => {
   if (!type || !line) {
     logger.error('missing required arg')
     return
   }
-  if ('postfix/' === type.substr(0, 8)) type = type.substr(8)
+  if ('postfix/' === type.substring(0, 8)) type = type.substring(8)
 
-  switch (type) {
-    case 'qmgr':
-    case 'pickup':
-    case 'error':
-    case 'submission/smtpd':
-      return argAsObject(type, line)
-    case 'smtp':
-      return smtpAsObject(line)
-    case 'bounce':
-      return bounceAsObject(line)
+  const directHandlers = {
+    qmgr              : () => argAsObject(type, line),
+    pickup            : () => argAsObject(type, line),
+    error             : () => argAsObject(type, line),
+    'submission/smtpd': () => argAsObject(type, line),
+    smtp              : () => smtpAsObject(line),
+    bounce            : () => bounceAsObject(line),
   }
+
+  if (directHandlers[type]) return directHandlers[type]()
 
   const match = line.match(regex[type])
   if (!match) return
 
-  switch (type) {
-    case 'syslog':
-      return syslogAsObject(match)
-    case 'scache':
-      return { statistics: match[1] }
-    case 'postscreen':
-      return { postscreen: match[1] }
-    case 'local':
-      return localAsObject(match)
-    case 'postsuper':
-      return { qid: match[1], msg: match[2] }
+  const typeHandlers = {
+    syslog    : () => syslogAsObject(match),
+    scache    : () => ({ statistics: match[1] }),
+    postscreen: () => ({ postscreen: match[1] }),
+    local     : () => localAsObject(match),
+    postsuper : () => ({ qid: match[1], msg: match[2] }),
   }
 
-  return matchAsObject(match)
+  return typeHandlers[type]?.() ?? matchAsObject(match)
 }
 
 const syslogAsObject = match => ({
@@ -137,16 +133,16 @@ const syslogAsObject = match => ({
 })
 
 const matchAsObject = match => {
-  match.shift()
+  const [ , ...pairs ] = match
   const obj = {}
-  const qid = match.shift()
+  const qid = pairs.shift()
   if (qid) obj.qid = qid
-  while (match.length) {
-    const key = match.shift()
-    const val = match.shift()
-    if (key === undefined) continue
-    if (val === undefined) continue
-    obj[key] = val
+
+  for (let i = 0; i < pairs.length; i += 2) {
+    const [ key, val ] = pairs.slice(i, i + 2)
+    if (key !== undefined && val !== undefined) {
+      obj[key] = val
+    }
   }
   return obj
 }
@@ -204,11 +200,9 @@ const smtpAsObject = line => {
 
   match = line.match(regex['smtp-debug'])
   if (!match) return
-  if (match[1] && match[2]) {
-    return {
-      qid: match[1],
-      msg: match[2],
-    }
+  const [ , qid, msg ] = match
+  if (qid && msg) {
+    return { qid, msg }
   }
   return { msg: match[0] }
 }
@@ -216,26 +210,26 @@ const smtpAsObject = line => {
 const bounceAsObject = line => {
   let match = line.match(regex.bounce)
   if (match) {
-    match.shift()
+    const [ , qid, dsnQid ] = match
     const obj = {}
-    const qid = match.shift()
     if (qid) obj.qid = qid
-    obj.dsnQid = match.shift()
+    if (dsnQid) obj.dsnQid = dsnQid
     return obj
   }
 
   match = line.match(regex['bounce-fatal'])
   if (match) {
+    const [ , msg, qid, error ] = match
     return {
-      qid: match[2],
-      msg: `fatal: ${match[1]}: ${match[3]}`,
+      qid,
+      msg: `fatal: ${msg}: ${error}`,
     }
   }
 }
 
 const localAsObject = match => {
   const obj = matchAsObject(match)
-  const m = obj.status.match(regex.forwardedAs)
+  const m = obj.status?.match(regex.forwardedAs)
   if (m) {
     obj.status = 'forwarded'
     obj.forwardedAs = m[1]

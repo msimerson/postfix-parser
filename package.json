@@ -8,7 +8,7 @@
     "maillog",
     "mail.log"
   ],
-  "version": "1.2.0",
+  "version": "1.3.0",
   "homepage": "https://github.com/msimerson/postfix-parser",
   "author": {
     "name": "Matt Simerson"
@@ -18,17 +18,13 @@
     "url": "git://github.com/msimerson/postfix-parser.git"
   },
   "main": "index.js",
+  "type": "module",
   "files": [
     "Changes.md",
     "lib"
   ],
   "engines": {
-    "node": ">=20"
-  },
-  "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "eslint": "^10.0.0",
-    "globals": "^17.5.0"
+    "node": ">=22"
   },
   "bugs": {
     "url": "https://github.com/msimerson/postfix-parser/issues"
@@ -52,5 +48,6 @@
     "printWidth": 90,
     "singleQuote": true,
     "semi": false
-  }
+  },
+  "dependencies": {}
 }

@@ -1,14 +1,14 @@
-const js = require('@eslint/js')
+import js from '@eslint/js'
 
-module.exports = [
+export default [
   {
     ignores: ['node_modules/'],
   },
   {
     files: ['**/*.js'],
     languageOptions: {
-      ecmaVersion: 2024,
-      sourceType: 'commonjs',
+      ecmaVersion: 2020,
+      sourceType: 'module',
       globals: {
         console: 'readonly',
         process: 'readonly',
@@ -16,9 +16,6 @@ module.exports = [
         __dirname: 'readonly',
         __filename: 'readonly',
         global: 'readonly',
-        require: 'readonly',
-        exports: 'writable',
-        module: 'readonly',
         setImmediate: 'readonly',
         clearImmediate: 'readonly',
         setInterval: 'readonly',
