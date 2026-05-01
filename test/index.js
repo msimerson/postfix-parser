@@ -1,8 +1,8 @@
-
 const assert = require('assert')
-const util   = require('util')
+const util = require('util')
+const { describe, it } = require('node:test')
 
-const re     = require('../index')
+const re = require('../index')
 
 const syslogLines = [
   {
@@ -59,7 +59,7 @@ const syslogLines = [
       prog  : 'postfix/smtp',
       pid   : '22030',
       qid   : '3mPVKl0Mhjz7sXv',
-      to    :  '56597@continuity.delivery',
+      to    : '56597@continuity.delivery',
       relay : '10.2.2.85[10.2.2.85]:2527',
       delay : '0.51',
       delays: '0.44/0.01/0.05/0.01',
@@ -76,7 +76,7 @@ const syslogLines = [
       prog  : 'postfix/smtp',
       pid   : '22030',
       qid   : '3mPVKl0Mhjz7sXv',
-      to    :  '56597@continuity.delivery',
+      to    : '56597@continuity.delivery',
       relay : '10.2.2.85[10.2.2.85]:2527',
       delay : '0.51',
       delays: '0.44/0.01/0.05/0.01',
@@ -123,7 +123,7 @@ const syslogLines = [
 ]
 
 describe('syslog lines', function () {
-  context('asObject', function () {
+  describe('asObject', function () {
     syslogLines.forEach(function (test) {
       it(test.name, function () {
         const res = re.asObject(test.line)
@@ -146,7 +146,8 @@ const postfixLines = [
       delay   : '1.2',
       delays  : '0.76/0.01/0.09/0.34',
       dsn     : '2.0.0',
-      status  : 'sent (250 2.0.0 t5UI2nBt018923-t5UI2nBw018923 Message accepted for delivery)',
+      status:
+        'sent (250 2.0.0 t5UI2nBt018923-t5UI2nBw018923 Message accepted for delivery)',
     },
   },
   {
@@ -160,7 +161,8 @@ const postfixLines = [
       delay   : '1.2',
       delays  : '0.76/0.01/0.09/0.34',
       dsn     : '2.0.0',
-      status  : 'sent (250 2.0.0 t5UI2nBt018923-t5UI2nBw018923 Message accepted for delivery)',
+      status:
+        'sent (250 2.0.0 t5UI2nBt018923-t5UI2nBw018923 Message accepted for delivery)',
     },
   },
   {
@@ -175,7 +177,8 @@ const postfixLines = [
       delay   : '2.5',
       delays  : '1.6/0.01/0.08/0.81',
       dsn     : '5.7.1',
-      status  : 'bounced (host mail2.sender.com[66.100.32.07] said: 550 5.7.1 Unable to deliver to <jpayne@recipient.com> (in reply to RCPT TO command))',
+      status:
+        'bounced (host mail2.sender.com[66.100.32.07] said: 550 5.7.1 Unable to deliver to <jpayne@recipient.com> (in reply to RCPT TO command))',
     },
   },
   {
@@ -204,7 +207,8 @@ const postfixLines = [
       delay : '55175',
       delays: '55144/0.05/30/0',
       dsn   : '4.4.1',
-      status: 'deferred (connect to dc-452452f6.bar.com[63.200.300.49]:25: Connection timed out)',
+      status:
+        'deferred (connect to dc-452452f6.bar.com[63.200.300.49]:25: Connection timed out)',
     },
   },
   {
@@ -337,14 +341,14 @@ const postfixLines = [
     },
   },
   {
-    line: '3mR69k6Fm0z7sX4: host smtp2.hiltonhhonors.net[159.127.185.42] refused to talk to me: 554-smtp2.hiltonhhonors.net 554 Your access to this mail system has been rejected due to the sending MTA\'s poor reputation. If you believe that this failure is in error, please contact the intended recipient via alternate means.',
+    line: "3mR69k6Fm0z7sX4: host smtp2.hiltonhhonors.net[159.127.185.42] refused to talk to me: 554-smtp2.hiltonhhonors.net 554 Your access to this mail system has been rejected due to the sending MTA's poor reputation. If you believe that this failure is in error, please contact the intended recipient via alternate means.",
     type: 'postfix/smtp',
     desc: 'reject',
     obj : {
       qid   : '3mR69k6Fm0z7sX4',
       action: 'reject',
       host  : 'smtp2.hiltonhhonors.net[159.127.185.42]',
-      msg   : '554-smtp2.hiltonhhonors.net 554 Your access to this mail system has been rejected due to the sending MTA\'s poor reputation. If you believe that this failure is in error, please contact the intended recipient via alternate means.',
+      msg   : "554-smtp2.hiltonhhonors.net 554 Your access to this mail system has been rejected due to the sending MTA's poor reputation. If you believe that this failure is in error, please contact the intended recipient via alternate means.",
     },
   },
   {
@@ -443,7 +447,8 @@ const postfixLines = [
       delay : '165276',
       delays: '165276/0.09/0/0.09',
       dsn   : '4.4.1',
-      status: 'deferred (delivery temporarily suspended: connect to 24.200.177.247[24.200.177.247]:25: Connection timed out)',
+      status:
+        'deferred (delivery temporarily suspended: connect to 24.200.177.247[24.200.177.247]:25: Connection timed out)',
     },
   },
   {
@@ -456,7 +461,8 @@ const postfixLines = [
       delay : '165276',
       delays: '165276/0.09/0/0.09',
       dsn   : '4.4.1',
-      status: 'deferred (delivery temporarily suspended: connect to 24.200.177.247[24.200.177.247]:25: Connection timed out)',
+      status:
+        'deferred (delivery temporarily suspended: connect to 24.200.177.247[24.200.177.247]:25: Connection timed out)',
     },
   },
   {
@@ -663,11 +669,11 @@ const postfixLines = [
     type: 'syslog',
     desc: 'postfix/smtpd',
     obj : {
-      'date': 'Jan 6 08:39:06',
-      'host': 'mail',
-      'msg' : '93C8388C38: client=unknown[192.168.1.0]',
-      'pid' : '339505',
-      'prog': 'postfix/smtpd',
+      date: 'Jan 6 08:39:06',
+      host: 'mail',
+      msg : '93C8388C38: client=unknown[192.168.1.0]',
+      pid : '339505',
+      prog: 'postfix/smtpd',
     },
   },
   {
@@ -675,11 +681,11 @@ const postfixLines = [
     type: 'syslog',
     desc: 'postfix/smtpd disconnect',
     obj : {
-      'date': 'Jan 6 08:39:06',
-      'host': 'mail',
-      'msg' : 'disconnect from unknown[192.168.1.0] ehlo=1 mail=1 rcpt=1 data=1 quit=1',
-      'pid' : '339505',
-      'prog': 'postfix/smtpd',
+      date: 'Jan 6 08:39:06',
+      host: 'mail',
+      msg : 'disconnect from unknown[192.168.1.0] ehlo=1 mail=1 rcpt=1 data=1 quit=1',
+      pid : '339505',
+      prog: 'postfix/smtpd',
     },
   },
   {
@@ -687,11 +693,11 @@ const postfixLines = [
     type: 'syslog',
     desc: 'postfix/smtpd connect',
     obj : {
-      'date': 'Jan 6 08:39:49',
-      'host': 'mail',
-      'msg' : 'connect from localhost[127.0.0.1]',
-      'pid' : '339505',
-      'prog': 'postfix/smtpd',
+      date: 'Jan 6 08:39:49',
+      host: 'mail',
+      msg : 'connect from localhost[127.0.0.1]',
+      pid : '339505',
+      prog: 'postfix/smtpd',
     },
   },
 ]

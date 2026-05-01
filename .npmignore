@@ -1,9 +1,0 @@
-Gruntfile.js
-.jshintrc
-.eslintrc
-.eslintrc*
-.travis.yml
-.codeclimate.yml
-.github
-.gitmodules
-.release
