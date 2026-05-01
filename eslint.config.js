@@ -26,15 +26,19 @@ export default [
     },
     rules: {
       ...js.configs.recommended.rules,
-      'quotes': ['error', 'single', { avoidEscape: true, allowTemplateLiterals: true }],
-      'semi': ['error', 'never'],
+      quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: true }],
+      semi: ['error', 'never'],
       'semi-style': ['error', 'last'],
       'no-unused-vars': ['error', { args: 'none' }],
-      'array-bracket-spacing': ['warn', 'always', { arraysInArrays: false, objectsInArrays: false }],
+      'array-bracket-spacing': [
+        'warn',
+        'always',
+        { arraysInArrays: false, objectsInArrays: false },
+      ],
       'no-trailing-spaces': ['error'],
       'space-before-function-paren': ['error', 'always'],
       'object-curly-spacing': ['error', 'always'],
-      'indent': ['error', 2, { SwitchCase: 1 }],
+      indent: ['error', 2, { SwitchCase: 1 }],
       'key-spacing': [
         'warn',
         {

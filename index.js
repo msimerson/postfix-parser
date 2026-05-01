@@ -52,9 +52,7 @@ const regex = {
   ),
   'error-retry': new RegExp(`^warning: (${postfixQidAny}): (.*)$`),
   bounce       : new RegExp(
-    `^(?:(${
-      postfixQidAny
-    }): )?sender non-delivery notification: (${postfixQidAny}$)`,
+    `^(?:(${postfixQidAny}): )?sender non-delivery notification: (${postfixQidAny}$)`,
   ),
   'bounce-fatal': new RegExp(`^fatal: (.*?) (${postfixQidAny}): (.*)$`),
   local         : new RegExp(
