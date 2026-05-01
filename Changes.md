@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ### [1.3.0] - 2026-04-30
 
+- convert to ESM module
 
 ### [1.2.0] - 2026-04-30
 

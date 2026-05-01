@@ -1,8 +1,8 @@
-const assert = require('assert')
-const util = require('util')
-const { describe, it } = require('node:test')
+import assert from 'assert'
+import util from 'util'
+import { describe, it } from 'node:test'
 
-const re = require('../index')
+import * as re from '../index.js'
 
 const syslogLines = [
   {
